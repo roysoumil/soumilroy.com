@@ -65,7 +65,7 @@ export default function Home() {
         <p className="text-[0.8rem] font-semibold tracking-wider text-[#59636e] sm:text-[18px]">
           Hello · Hola · Bonjour · 你好 · Namaste · Ciao · こんにちは
         </p>
-        <h1 className="mt-5 max-w-[36ch] text-[clamp(2.8rem,7.5vw,5.25rem)] font-semibold leading-[1.05] text-[#1f2328]">
+        <h1 className="mt-5 max-w-[36ch] text-[clamp(2.8rem,7.5vw,5.25rem)] font-thin leading-[1.05] tracking-tight text-[#1f2328]">
           I'm Soumil Roy
         </h1>
         <p className="mt-6 max-w-[68ch] text-[clamp(1.15rem,2.8vw,1.6rem)] leading-[1.7] text-[#59636e]">
@@ -105,7 +105,7 @@ export default function Home() {
           {TECH_ICONS.map(({ name, Icon, icon }) => (
             <div
               key={name}
-              className="group relative flex items-center gap-2.5 sm:gap-3 rounded-2xl border border-[#d1d9e0]/80 bg-white/80 px-4 py-2.5 sm:px-5 sm:py-3 overflow-visible"
+              className="group flex items-center gap-2.5 sm:gap-3 rounded-2xl border border-[#d1d9e0]/80 bg-white/80 px-4 py-2.5 sm:px-5 sm:py-3"
             >
               {icon ?? (
                 <Icon className="size-6 sm:size-7 shrink-0 text-[#1f2328] transition-colors group-hover:text-[#0969da]" />
@@ -113,15 +113,6 @@ export default function Home() {
               <span className="text-[clamp(0.9rem,1.5vw,1.05rem)] font-semibold tracking-tight text-[#1f2328]">
                 {name}
               </span>
-              {/* Orbiting particle on hover */}
-              <div
-                className="pointer-events-none absolute inset-[-12px] z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                aria-hidden
-              >
-                <div className="absolute inset-0 group-hover:animate-pill-orbit">
-                  <div className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#0969da]" />
-                </div>
-              </div>
             </div>
           ))}
         </div>
