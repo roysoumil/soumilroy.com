@@ -49,19 +49,29 @@ export function FlowLineAnimation() {
 
     const defs = d3.select(svg).append("defs");
 
+    const particleGrad1 = defs.append("radialGradient").attr("id", "particle-gradient-1");
+    particleGrad1.append("stop").attr("offset", "0%").attr("stop-color", "#38bdf8");
+    particleGrad1.append("stop").attr("offset", "60%").attr("stop-color", "#0284c7");
+    particleGrad1.append("stop").attr("offset", "100%").attr("stop-color", "#0c4a6e");
+
+    const particleGrad2 = defs.append("radialGradient").attr("id", "particle-gradient-2");
+    particleGrad2.append("stop").attr("offset", "0%").attr("stop-color", "#fb7185");
+    particleGrad2.append("stop").attr("offset", "60%").attr("stop-color", "#e11d48");
+    particleGrad2.append("stop").attr("offset", "100%").attr("stop-color", "#881337");
+
     const gradient = defs
       .append("linearGradient")
       .attr("id", "trail-gradient")
       .attr("gradientUnits", "userSpaceOnUse");
-    gradient.append("stop").attr("offset", "0%").attr("stop-color", "rgba(9, 105, 218, 0)");
-    gradient.append("stop").attr("offset", "100%").attr("stop-color", "rgba(9, 105, 218, 0.4)");
+    gradient.append("stop").attr("offset", "0%").attr("stop-color", "rgba(2, 132, 199, 0)");
+    gradient.append("stop").attr("offset", "100%").attr("stop-color", "rgba(2, 132, 199, 0.6)");
 
     const gradient2 = defs
       .append("linearGradient")
       .attr("id", "trail-gradient-2")
       .attr("gradientUnits", "userSpaceOnUse");
-    gradient2.append("stop").attr("offset", "0%").attr("stop-color", "rgba(9, 105, 218, 0)");
-    gradient2.append("stop").attr("offset", "100%").attr("stop-color", "rgba(9, 105, 218, 0.4)");
+    gradient2.append("stop").attr("offset", "0%").attr("stop-color", "rgba(225, 29, 72, 0)");
+    gradient2.append("stop").attr("offset", "100%").attr("stop-color", "rgba(225, 29, 72, 0.6)");
 
     const trailPath = d3
       .select(svg)
@@ -85,16 +95,16 @@ export function FlowLineAnimation() {
       .select(svg)
       .append("circle")
       .attr("r", 3)
-      .attr("fill", "#0969da")
-      .attr("stroke", "rgba(255, 255, 255, 0.9)")
+      .attr("fill", "url(#particle-gradient-1)")
+      .attr("stroke", "rgba(56, 189, 248, 0.9)")
       .attr("stroke-width", 1.5);
 
     const particle2 = d3
       .select(svg)
       .append("circle")
       .attr("r", 3)
-      .attr("fill", "#0969da")
-      .attr("stroke", "rgba(255, 255, 255, 0.9)")
+      .attr("fill", "url(#particle-gradient-2)")
+      .attr("stroke", "rgba(251, 113, 133, 0.9)")
       .attr("stroke-width", 1.5);
 
     const timer = d3.timer((elapsed) => {

@@ -5,6 +5,7 @@ import {
   SiTypescript,
   SiGo,
 } from "react-icons/si";
+import { HiOutlineExternalLink } from "react-icons/hi";
 import { FlowLineAnimation } from "./components/FlowLineAnimation";
 
 const TECH_ICONS = [
@@ -50,7 +51,7 @@ export default function Home() {
       />
 
       <section className="relative z-10 w-full">
-        <p className="text-[0.75rem] font-semibold tracking-wider text-[#59636e] sm:text-[13px]">
+        <p className="text-[0.8rem] font-semibold tracking-wider text-[#59636e] sm:text-[18px]">
           Hello · Hola · Bonjour · 你好 · Namaste · Ciao · こんにちは
         </p>
         <h1 className="mt-5 max-w-[36ch] text-[clamp(2.8rem,7.5vw,5.25rem)] font-semibold leading-[1.05] text-[#1f2328]">
@@ -62,11 +63,32 @@ export default function Home() {
             href="https://empowerreg.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-baseline font-semibold text-[#0969da] underline decoration-[#0969da]/30 decoration-2 underline-offset-4 transition-colors hover:text-[#0550ae] hover:decoration-[#0969da]"
+            className="inline-flex items-center gap-1 font-semibold text-[#0969da] underline decoration-[#0969da]/30 decoration-2 underline-offset-4 transition-colors hover:text-[#0550ae] hover:decoration-[#0969da]"
           >
             empowerreg.ai
+            <HiOutlineExternalLink className="inline-block size-4 shrink-0 align-middle sm:size-5" />
           </a>{" "}
-          or deep in the weeds of system design, my goal is always the same: building robust, end-to-end environments that solve real-world problems at scale.
+          or deep in the weeds of system design, my goal is always the same: building robust, end-to-end environments that solve real-world problems. You can reach out to me on{" "}
+          <a
+            href="https://www.linkedin.com/in/soumilroy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-semibold text-[#0969da] underline decoration-[#0969da]/30 decoration-2 underline-offset-4 transition-colors hover:text-[#0550ae] hover:decoration-[#0969da]"
+          >
+            LinkedIn
+            <HiOutlineExternalLink className="inline-block size-4 shrink-0 align-middle sm:size-5" />
+          </a>{" "}
+          or{" "}
+          <a
+            href="https://www.instagram.com/soumilroy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-semibold text-[#0969da] underline decoration-[#0969da]/30 decoration-2 underline-offset-4 transition-colors hover:text-[#0550ae] hover:decoration-[#0969da]"
+          >
+            Instagram
+            <HiOutlineExternalLink className="inline-block size-4 shrink-0 align-middle sm:size-5" />
+          </a>
+          .
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
           {TECH_ICONS.map(({ name, Icon, icon }) => (
