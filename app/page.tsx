@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef } from "react";
 import {
   SiDocker,
   SiPython,
@@ -7,6 +10,7 @@ import {
 } from "react-icons/si";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { FlowLineAnimation } from "./components/FlowLineAnimation";
+import { ShapeMeshAnimation } from "./components/ShapeMeshAnimation";
 
 const TECH_ICONS = [
   {
@@ -27,11 +31,18 @@ const TECH_ICONS = [
 ];
 
 export default function Home() {
+  const contentRef = useRef<HTMLElement>(null);
+
   return (
-    <main className="relative flex min-h-screen items-center overflow-hidden bg-[#ffffff] px-6 py-24 font-sans sm:px-10 lg:px-16">
+    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#ffffff] px-6 py-24 font-sans sm:px-10 lg:px-16">
       {/* D3 flowing line animation */}
       <div className="pointer-events-none absolute inset-0 z-0">
-        <FlowLineAnimation />
+        <FlowLineAnimation contentRef={contentRef} />
+      </div>
+
+      {/* D3 animating shape mesh - circles, squares, triangles, hexagons around content */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <ShapeMeshAnimation />
       </div>
 
       {/* Gradient mesh background - GitHub light accents */}
@@ -50,7 +61,7 @@ export default function Home() {
         }}
       />
 
-      <section className="relative z-10 w-full">
+      <section ref={contentRef} className="relative z-10 w-full max-w-5xl mx-auto">
         <p className="text-[0.8rem] font-semibold tracking-wider text-[#59636e] sm:text-[18px]">
           Hello · Hola · Bonjour · 你好 · Namaste · Ciao · こんにちは
         </p>
@@ -94,7 +105,7 @@ export default function Home() {
           {TECH_ICONS.map(({ name, Icon, icon }) => (
             <div
               key={name}
-              className="group flex items-center gap-2.5 sm:gap-3 rounded-2xl border border-[#d1d9e0]/80 bg-white/80 px-4 py-2.5 sm:px-5 sm:py-3 shadow-sm shadow-[#1f2328]/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0969da]/30 hover:bg-[#ddf4ff]/60 hover:shadow-md hover:shadow-[#0969da]/10"
+              className="group relative flex items-center gap-2.5 sm:gap-3 rounded-2xl border border-[#d1d9e0]/80 bg-white/80 px-4 py-2.5 sm:px-5 sm:py-3 overflow-visible"
             >
               {icon ?? (
                 <Icon className="size-6 sm:size-7 shrink-0 text-[#1f2328] transition-colors group-hover:text-[#0969da]" />
@@ -102,6 +113,15 @@ export default function Home() {
               <span className="text-[clamp(0.9rem,1.5vw,1.05rem)] font-semibold tracking-tight text-[#1f2328]">
                 {name}
               </span>
+              {/* Orbiting particle on hover */}
+              <div
+                className="pointer-events-none absolute inset-[-12px] z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                aria-hidden
+              >
+                <div className="absolute inset-0 group-hover:animate-pill-orbit">
+                  <div className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#0969da]" />
+                </div>
+              </div>
             </div>
           ))}
         </div>

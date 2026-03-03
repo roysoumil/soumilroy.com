@@ -3,37 +3,57 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
-export function FlowLineAnimation() {
+type ContentRect = { left: number; top: number; width: number; height: number };
+
+export function FlowLineAnimation({ contentRef }: { contentRef: React.RefObject<HTMLElement | null> }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [contentRect, setContentRect] = useState<ContentRect | null>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const content = contentRef?.current;
+    if (!content) return;
 
-    const updateDimensions = () => {
-      setDimensions({
-        width: container.clientWidth,
-        height: container.clientHeight,
+    const updateRect = () => {
+      const rect = content.getBoundingClientRect();
+      const container = containerRef.current;
+      if (!container) return;
+      const containerRect = container.getBoundingClientRect();
+      setContentRect({
+        left: rect.left - containerRect.left,
+        top: rect.top - containerRect.top,
+        width: rect.width,
+        height: rect.height,
       });
     };
 
-    updateDimensions();
-    const observer = new ResizeObserver(updateDimensions);
-    observer.observe(container);
+    updateRect();
+    const resizeObserver = new ResizeObserver(updateRect);
+    resizeObserver.observe(content);
+    window.addEventListener("scroll", updateRect, true);
 
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("scroll", updateRect, true);
+    };
+  }, [contentRef]);
 
   useEffect(() => {
     const svg = svgRef.current;
-    const { width, height } = dimensions;
-    if (!svg || width === 0 || height === 0) return;
+    const rect = contentRect;
+    if (!svg || !rect || rect.width === 0 || rect.height === 0) return;
 
-    // Rectangular path: top -> right -> bottom -> left (clockwise)
-    const padding = 24;
-    const rectPath = `M ${padding} ${padding} L ${width - padding} ${padding} L ${width - padding} ${height - padding} L ${padding} ${height - padding} Z`;
+    // Path around content box with responsive padding (24–48px for natural spacing on mobile)
+    const padding = Math.max(24, Math.min(48, Math.min(rect.width, rect.height) * 0.1));
+    const cornerRadius = Math.min(padding * 1.2, Math.min(rect.width, rect.height) * 0.08);
+    const x1 = rect.left - padding;
+    const y1 = rect.top - padding;
+    const x2 = rect.left + rect.width + padding;
+    const y2 = rect.top + rect.height + padding;
+    const r = Math.min(cornerRadius, (x2 - x1) / 2, (y2 - y1) / 2);
+
+    // Rounded rectangle path (clockwise): top → top-right arc → right → bottom-right arc → bottom → bottom-left arc → left → top-left arc
+    const rectPath = `M ${x1 + r} ${y1} L ${x2 - r} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y1 + r} L ${x2} ${y2 - r} A ${r} ${r} 0 0 1 ${x2 - r} ${y2} L ${x1 + r} ${y2} A ${r} ${r} 0 0 1 ${x1} ${y2 - r} L ${x1} ${y1 + r} A ${r} ${r} 0 0 1 ${x1 + r} ${y1} Z`;
 
     d3.select(svg).selectAll("*").remove();
 
@@ -50,35 +70,35 @@ export function FlowLineAnimation() {
     const defs = d3.select(svg).append("defs");
 
     const particleGrad1 = defs.append("radialGradient").attr("id", "particle-gradient-1");
-    particleGrad1.append("stop").attr("offset", "0%").attr("stop-color", "#38bdf8");
-    particleGrad1.append("stop").attr("offset", "60%").attr("stop-color", "#0284c7");
+    particleGrad1.append("stop").attr("offset", "0%").attr("stop-color", "#0ea5e9");
+    particleGrad1.append("stop").attr("offset", "60%").attr("stop-color", "#0369a1");
     particleGrad1.append("stop").attr("offset", "100%").attr("stop-color", "#0c4a6e");
 
     const particleGrad2 = defs.append("radialGradient").attr("id", "particle-gradient-2");
-    particleGrad2.append("stop").attr("offset", "0%").attr("stop-color", "#fb7185");
-    particleGrad2.append("stop").attr("offset", "60%").attr("stop-color", "#e11d48");
-    particleGrad2.append("stop").attr("offset", "100%").attr("stop-color", "#881337");
+    particleGrad2.append("stop").attr("offset", "0%").attr("stop-color", "#e11d48");
+    particleGrad2.append("stop").attr("offset", "60%").attr("stop-color", "#be123c");
+    particleGrad2.append("stop").attr("offset", "100%").attr("stop-color", "#9f1239");
 
     const gradient = defs
       .append("linearGradient")
       .attr("id", "trail-gradient")
       .attr("gradientUnits", "userSpaceOnUse");
-    gradient.append("stop").attr("offset", "0%").attr("stop-color", "rgba(2, 132, 199, 0)");
-    gradient.append("stop").attr("offset", "100%").attr("stop-color", "rgba(2, 132, 199, 0.6)");
+    gradient.append("stop").attr("offset", "0%").attr("stop-color", "rgba(3, 105, 161, 0)");
+    gradient.append("stop").attr("offset", "100%").attr("stop-color", "rgba(3, 105, 161, 0.7)");
 
     const gradient2 = defs
       .append("linearGradient")
       .attr("id", "trail-gradient-2")
       .attr("gradientUnits", "userSpaceOnUse");
-    gradient2.append("stop").attr("offset", "0%").attr("stop-color", "rgba(225, 29, 72, 0)");
-    gradient2.append("stop").attr("offset", "100%").attr("stop-color", "rgba(225, 29, 72, 0.6)");
+    gradient2.append("stop").attr("offset", "0%").attr("stop-color", "rgba(190, 18, 60, 0)");
+    gradient2.append("stop").attr("offset", "100%").attr("stop-color", "rgba(190, 18, 60, 0.7)");
 
     const trailPath = d3
       .select(svg)
       .append("path")
       .attr("fill", "none")
       .attr("stroke", "url(#trail-gradient)")
-      .attr("stroke-width", 5)
+      .attr("stroke-width", 2)
       .attr("stroke-linecap", "round")
       .attr("stroke-linejoin", "round");
 
@@ -87,25 +107,25 @@ export function FlowLineAnimation() {
       .append("path")
       .attr("fill", "none")
       .attr("stroke", "url(#trail-gradient-2)")
-      .attr("stroke-width", 5)
+      .attr("stroke-width", 2)
       .attr("stroke-linecap", "round")
       .attr("stroke-linejoin", "round");
 
     const particle = d3
       .select(svg)
       .append("circle")
-      .attr("r", 3)
+      .attr("r", 1.5)
       .attr("fill", "url(#particle-gradient-1)")
-      .attr("stroke", "rgba(56, 189, 248, 0.9)")
-      .attr("stroke-width", 1.5);
+      .attr("stroke", "rgba(14, 165, 233, 0.9)")
+      .attr("stroke-width", 0.5);
 
     const particle2 = d3
       .select(svg)
       .append("circle")
-      .attr("r", 3)
+      .attr("r", 1.5)
       .attr("fill", "url(#particle-gradient-2)")
-      .attr("stroke", "rgba(251, 113, 133, 0.9)")
-      .attr("stroke-width", 1.5);
+      .attr("stroke", "rgba(225, 29, 72, 0.9)")
+      .attr("stroke-width", 0.5);
 
     const timer = d3.timer((elapsed) => {
       const phase = ((elapsed / 1000) * 280) % pathLength;
@@ -140,7 +160,7 @@ export function FlowLineAnimation() {
       timer.stop();
       d3.select(svg).selectAll("*").remove();
     };
-  }, [dimensions]);
+  }, [contentRect]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 h-full w-full">
