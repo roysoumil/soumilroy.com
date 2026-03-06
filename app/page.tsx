@@ -61,7 +61,10 @@ export default function Home() {
         }}
       />
 
-      <section ref={contentRef} className="relative z-10 w-full max-w-5xl mx-auto">
+      <section
+        ref={contentRef}
+        className="relative z-10 w-full max-w-5xl mx-auto"
+      >
         <p className="text-[0.8rem] font-semibold tracking-wider text-[#59636e] sm:text-[18px]">
           Hello · Hola · Bonjour · 你好 · Namaste · Ciao · こんにちは
         </p>
@@ -69,7 +72,8 @@ export default function Home() {
           I'm Soumil Roy
         </h1>
         <p className="mt-6 max-w-[68ch] text-[clamp(1.15rem,2.8vw,1.6rem)] leading-[1.7] text-[#59636e]">
-          My core expertise lies in the full-lifecycle development of distributed architectures. Whether I’m leading infrastructure initiatives at{" "}
+          I build products from the UI down to the deep-level architecture.
+          Right now, I’m focused on building infrastructure at{" "}
           <a
             href="https://empowerreg.ai"
             target="_blank"
@@ -78,8 +82,9 @@ export default function Home() {
           >
             empowerreg.ai
             <HiOutlineExternalLink className="inline-block size-4 shrink-0 align-middle sm:size-5" />
-          </a>{" "}
-          or deep in the weeds of system design, my goal is always the same: building robust, end-to-end environments that solve real-world problems. You can reach out to me on{" "}
+          </a>
+          , where I make sure our distributed systems are as robust as they are
+          scalable. Say hello on{" "}
           <a
             href="https://www.linkedin.com/in/soumilroy/"
             target="_blank"
