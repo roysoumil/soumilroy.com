@@ -106,7 +106,7 @@ export default function Home() {
           Hello · Hola · Bonjour · 你好 · Namaste · Ciao · こんにちは
         </p>
         <h1 className="mt-5 max-w-[36ch] text-[clamp(2.8rem,7.5vw,5.25rem)] font-normal leading-[0.98] tracking-[-0.045em] text-[#17212b]">
-          I'm Soumil Roy
+          I'm Soumil Roy <span className="wave-emoji">👋</span>
         </h1>
         <p className="mt-6 max-w-[68ch] text-[clamp(1.15rem,2.8vw,1.6rem)] leading-[1.7] text-[#495563]">
           I build products from the UI down to the deep-level architecture.
@@ -147,7 +147,7 @@ export default function Home() {
           {TECH_ICONS.map(({ name, Icon, icon, labelClass, iconClass }) => (
             <div
               key={name}
-              className="group flex items-center gap-2.5 sm:gap-3 rounded-none border-2 border-black bg-[#f8f5ee] px-4 py-2.5 sm:px-5 sm:py-3 shadow-[6px_6px_0_0_#111111] transition-transform duration-150 hover:-translate-y-0.5"
+              className="group flex items-center gap-2.5 sm:gap-3 rounded-none border-2 border-[#0f766e] bg-[#f8f5ee] px-4 py-2.5 sm:px-5 sm:py-3 shadow-[6px_6px_0_0_#0f766e] transition-transform duration-150 hover:-translate-y-0.5"
             >
               {icon ?? (
                 <Icon

@@ -25,6 +25,32 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+.wave-emoji {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave 5s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%,
+  10%,
+  100% {
+    transform: rotate(0deg);
+  }
+  2% {
+    transform: rotate(14deg);
+  }
+  4% {
+    transform: rotate(-8deg);
+  }
+  6% {
+    transform: rotate(12deg);
+  }
+  8% {
+    transform: rotate(-6deg);
+  }
+}
+
 .bg-option-soft-paper {
   background-color: #f7f5f1;
   background-image:
