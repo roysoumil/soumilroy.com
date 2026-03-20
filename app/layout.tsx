@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Archivo, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["100", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 const siteUrl = "https://soumilroy.com";
@@ -100,7 +101,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${archivo.variable} ${geistMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${spaceMono.variable} antialiased`}
         suppressHydrationWarning
       >
         <script
