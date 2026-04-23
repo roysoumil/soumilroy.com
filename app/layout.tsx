@@ -79,7 +79,7 @@ const jsonLd = {
     "Software engineer specializing in distributed architectures and full-lifecycle development. Leading infrastructure initiatives at empowerreg.ai. Expertise in Azure, Docker, Python, React, TypeScript, and Go.",
   sameAs: [
     "https://www.linkedin.com/in/soumilroy/",
-    "https://www.instagram.com/soumilroy/",
+    "https://github.com/roysoumil",
   ],
   knowsAbout: [
     "Distributed Systems",
