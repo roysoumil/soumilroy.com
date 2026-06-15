@@ -5,39 +5,31 @@ import "./globals.css";
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "600"],
+  display: "swap",
 });
 
 const spaceMono = Space_Mono({
   variable: "--font-space-mono",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 const siteUrl = "https://soumilroy.com";
 
+const siteTitle = "Soumil Roy — Software Engineer";
+const siteDescription =
+  "Software engineer building end-to-end — from the interface down to the infrastructure. Currently at empowerreg.ai.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Soumil Roy | Distributed Systems & Full-Stack Engineer",
+    default: siteTitle,
     template: "%s | Soumil Roy",
   },
-  description:
-    "Soumil Roy is a software engineer specializing in distributed architectures and full-lifecycle development. Leading infrastructure at empowerreg.ai. Expertise in Azure, Docker, Python, React, TypeScript, and Go.",
-  keywords: [
-    "Soumil Roy",
-    "software engineer",
-    "distributed systems",
-    "full-stack developer",
-    "infrastructure",
-    "empowerreg.ai",
-    "Azure",
-    "Docker",
-    "Python",
-    "React",
-    "TypeScript",
-    "Go",
-  ],
+  description: siteDescription,
   authors: [{ name: "Soumil Roy", url: siteUrl }],
   creator: "Soumil Roy",
   openGraph: {
@@ -45,15 +37,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "Soumil Roy",
-    title: "Soumil Roy | Distributed Systems & Full-Stack Engineer",
-    description:
-      "Software engineer specializing in distributed architectures and full-lifecycle development. Leading infrastructure at empowerreg.ai.",
+    title: siteTitle,
+    description: siteDescription,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Soumil Roy | Distributed Systems & Full-Stack Engineer",
-    description:
-      "Software engineer specializing in distributed architectures and full-lifecycle development.",
+    title: siteTitle,
+    description: siteDescription,
   },
   robots: {
     index: true,
@@ -75,21 +65,22 @@ const jsonLd = {
   name: "Soumil Roy",
   url: siteUrl,
   jobTitle: "Software Engineer",
-  description:
-    "Software engineer specializing in distributed architectures and full-lifecycle development. Leading infrastructure initiatives at empowerreg.ai. Expertise in Azure, Docker, Python, React, TypeScript, and Go.",
+  description: siteDescription,
   sameAs: [
     "https://www.linkedin.com/in/soumilroy/",
     "https://github.com/roysoumil",
   ],
   knowsAbout: [
+    "Backend Infrastructure",
     "Distributed Systems",
-    "Infrastructure",
+    "Full Stack Development",
     "Azure",
-    "Docker",
+    "Go",
+    "Next.js",
+    "PostgreSQL",
     "Python",
     "React",
     "TypeScript",
-    "Go",
   ],
 };
 

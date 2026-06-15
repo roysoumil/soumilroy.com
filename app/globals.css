@@ -16,6 +16,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-feature-settings: "kern", "calt";
+}
+
+.font-mono {
+  font-variant-numeric: slashed-zero;
 }
 
 @keyframes fadeIn {
@@ -30,4 +35,29 @@ body {
     linear-gradient(to right, rgba(228, 228, 231, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(228, 228, 231, 0.03) 1px, transparent 1px);
   background-size: 100% 100%, 48px 48px, 48px 48px;
+}
+
+@media print {
+  html, body, main, section, aside, footer, .bg-dark-grid {
+    background: white !important;
+    background-image: none !important;
+    color: black !important;
+  }
+  body, body * {
+    color: black !important;
+    border-color: #d4d4d8 !important;
+  }
+  body *[style*="background"] {
+    background: transparent !important;
+    background-image: none !important;
+  }
+  a {
+    color: black !important;
+    text-decoration: underline !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555 !important;
+  }
 }
