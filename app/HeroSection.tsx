@@ -55,7 +55,7 @@ function StatusCard() {
   }, []);
 
   const copyEmail = () => {
-    navigator.clipboard?.writeText("soumilroy@pm.me").then(
+    navigator.clipboard?.writeText("soumilroy@pm.me")?.then(
       () => {
         setCopied(true);
         if (copyTimeout.current) clearTimeout(copyTimeout.current);
@@ -206,7 +206,7 @@ export default function HeroSection() {
           <div className="relative">
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -left-4 top-1 h-[calc(100%-0.25rem)] w-px bg-gradient-to-b from-[#3fb950]/40 via-[#3fb950]/10 to-transparent sm:-left-6"
+              className="fade-in-block [animation-delay:150ms] pointer-events-none absolute -left-4 top-1 h-[calc(100%-0.25rem)] w-px bg-gradient-to-b from-[#3fb950]/40 via-[#3fb950]/10 to-transparent sm:-left-6"
             />
 
             <p className="fade-in-block [animation-delay:150ms] text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#a1a1aa] sm:text-[0.8rem]">

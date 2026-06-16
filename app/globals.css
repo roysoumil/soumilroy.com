@@ -23,20 +23,29 @@ body {
   font-variant-numeric: slashed-zero;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(8px); visibility: visible; }
+  100% { opacity: 1; transform: translateY(0); visibility: visible; }
 }
 
+/* Longhand on purpose: the `animation` shorthand resets `animation-delay`
+   to 0, which would defeat the per-element [animation-delay:Nms]
+   stagger utilities. visibility:hidden during the delay window blocks
+   focus + screen-reader announcement on still-invisible content. */
 .fade-in-block {
   opacity: 0;
-  animation: fadeIn 800ms ease-out forwards;
+  visibility: hidden;
+  animation-name: fadeInUp;
+  animation-duration: 800ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fade-in-block {
     animation: none;
     opacity: 1;
+    visibility: visible;
   }
 }
 
