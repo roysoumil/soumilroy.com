@@ -66,6 +66,7 @@ const jsonLd = {
   url: siteUrl,
   jobTitle: "Software Engineer",
   description: siteDescription,
+  image: `${siteUrl}/opengraph-image`,
   sameAs: [
     "https://www.linkedin.com/in/soumilroy/",
     "https://github.com/roysoumil",

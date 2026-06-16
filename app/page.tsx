@@ -28,13 +28,14 @@ const WORK: WorkItem[] = [
   },
 ];
 
-function WorkCard({ item }: { item: WorkItem }) {
+function WorkCard({ item, index }: { item: WorkItem; index: number }) {
   return (
     <a
       href={item.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col overflow-hidden rounded-lg border border-[#27272a] bg-[#0d0d10]/60 p-6 backdrop-blur-sm transition-colors duration-200 hover:border-[#3fb950]/40 focus-visible:border-[#3fb950]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3fb950]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090b]"
+      style={{ animationDelay: `${550 + index * 250}ms` }}
+      className="fade-in-block group relative flex flex-col overflow-hidden rounded-lg border border-[#27272a] bg-[#0d0d10]/60 p-6 backdrop-blur-sm transition-colors duration-200 hover:border-[#3fb950]/40 focus-visible:border-[#3fb950]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3fb950]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090b]"
     >
       <div className="flex items-start justify-between gap-4">
         <h3 className="text-xl font-normal tracking-[-0.015em] text-[#f4f4f5]">
@@ -70,7 +71,7 @@ export default function Home() {
 
       <section className="relative px-6 pb-16 pt-6 sm:px-10 sm:pb-20 sm:pt-8 lg:px-16 lg:pb-24 lg:pt-10">
         <div className="relative mx-auto max-w-7xl">
-          <header className="mb-10 flex items-baseline justify-between gap-4">
+          <header className="fade-in-block [animation-delay:200ms] mb-10 flex items-baseline justify-between gap-4">
             <h2 className="text-balance text-2xl font-normal tracking-[-0.02em] text-[#f4f4f5] sm:text-[1.75rem]">
               Selected work
             </h2>
@@ -79,8 +80,8 @@ export default function Home() {
             </span>
           </header>
           <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
-            {WORK.map((item) => (
-              <WorkCard key={item.title} item={item} />
+            {WORK.map((item, index) => (
+              <WorkCard key={item.title} item={item} index={index} />
             ))}
           </div>
         </div>

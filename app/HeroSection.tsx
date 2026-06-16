@@ -28,31 +28,6 @@ const CONSTELLATION = [
   { top: "92%", left: "18%", size: 1.5, opacity: 0.35 },
 ];
 
-const SEGMENT_TOKENS = BODY_SEGMENTS.map((seg) =>
-  seg.text.trim() === "" ? [] : seg.text.split(/(\s+)/),
-);
-const SEGMENT_WORD_COUNTS = SEGMENT_TOKENS.map(
-  (tokens) => tokens.filter((w) => w.trim()).length,
-);
-const TOTAL_WORDS = SEGMENT_WORD_COUNTS.reduce((a, b) => a + b, 0);
-
-function getTitleInterval(i: number, total: number): number {
-  const t = i / total;
-  const ease = t < 0.3 ? 150 - t * 166 : t > 0.7 ? 50 + (t - 0.7) * 333 : 60;
-  return Math.round(ease);
-}
-
-function Cursor({ variant = "body" }: { variant?: "title" | "body" }) {
-  const isTitle = variant === "title";
-  return (
-    <span
-      className={`inline-block w-[0.3em] bg-[#3fb950] align-baseline ml-0.5 cursor-blink ${
-        isTitle ? "h-[0.85em] translate-y-[0.05em]" : "h-[0.9em] translate-y-[0.1em]"
-      }`}
-    />
-  );
-}
-
 const TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Asia/Kolkata",
   hour: "2-digit",
@@ -60,7 +35,7 @@ const TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
   hour12: false,
 });
 
-function StatusCard({ visible }: { visible: boolean }) {
+function StatusCard() {
   const [copied, setCopied] = useState(false);
   const [time, setTime] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(false);
@@ -97,11 +72,7 @@ function StatusCard({ visible }: { visible: boolean }) {
   }, []);
 
   return (
-    <aside
-      className={`transition-opacity duration-500 ease-out ${
-        visible ? "opacity-100" : "opacity-0"
-      }`}
-    >
+    <aside className="fade-in-block [animation-delay:1200ms] lg:sticky lg:top-8 lg:self-start">
       <div className="relative overflow-hidden rounded-lg border border-[#27272a] bg-[#0d0d10]/60 backdrop-blur-sm">
         <div className="pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-[#3fb950]/70 to-transparent" />
 
@@ -192,103 +163,9 @@ function StatusCard({ visible }: { visible: boolean }) {
 
 export default function HeroSection() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-  const [phase, setPhase] = useState<"greeting" | "title" | "body" | "done-cursor">("greeting");
-  const [greetingVisible, setGreetingVisible] = useState(false);
-  const [displayedName, setDisplayedName] = useState("");
-  const [bodyWordCount, setBodyWordCount] = useState(0);
-  const [showCursor, setShowCursor] = useState(true);
-  const [techVisible, setTechVisible] = useState(false);
-  const [shouldAnimate, setShouldAnimate] = useState(true);
-  const [cursorRetired, setCursorRetired] = useState(false);
-  const prevWordCount = useRef(0);
-  const pendingTimeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
-
-  const bodyVisible = phase === "body" || phase === "done-cursor";
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let seen = false;
-    try { seen = sessionStorage.getItem("seen-hero") === "1"; } catch {}
-    if (reducedMotion || seen) {
-      setShouldAnimate(false);
-      setGreetingVisible(true);
-      setDisplayedName(FULL_NAME);
-      setBodyWordCount(TOTAL_WORDS);
-      setPhase("done-cursor");
-      setTechVisible(true);
-      setCursorRetired(true);
-      prevWordCount.current = TOTAL_WORDS;
-    } else {
-      try { sessionStorage.setItem("seen-hero", "1"); } catch {}
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!shouldAnimate) return;
-    const t = setTimeout(() => {
-      setGreetingVisible(true);
-      const t2 = setTimeout(() => setPhase("title"), 600);
-      pendingTimeouts.current.push(t2);
-    }, 200);
-    return () => clearTimeout(t);
-  }, [shouldAnimate]);
-
-  useEffect(() => {
-    if (phase !== "title") return;
-    let i = 0;
-
-    function typeNext() {
-      i++;
-      setDisplayedName(FULL_NAME.slice(0, i));
-      if (i >= FULL_NAME.length) {
-        const t1 = setTimeout(() => {
-          const t2 = setTimeout(() => setPhase("body"), 300);
-          pendingTimeouts.current.push(t2);
-        }, 400);
-        pendingTimeouts.current.push(t1);
-        return;
-      }
-      const t = setTimeout(typeNext, getTitleInterval(i, FULL_NAME.length));
-      pendingTimeouts.current.push(t);
-    }
-
-    const t = setTimeout(typeNext, getTitleInterval(0, FULL_NAME.length));
-    pendingTimeouts.current.push(t);
-
-    return () => {
-      pendingTimeouts.current.forEach(clearTimeout);
-      pendingTimeouts.current = [];
-    };
-  }, [phase]);
-
-  useEffect(() => {
-    if (phase !== "body") return;
-    let i = 0;
-    const interval = setInterval(() => {
-      i++;
-      setBodyWordCount(i);
-      if (i >= TOTAL_WORDS) {
-        clearInterval(interval);
-        setPhase("done-cursor");
-        const t = setTimeout(() => setTechVisible(true), 300);
-        pendingTimeouts.current.push(t);
-      }
-    }, 60);
-    return () => clearInterval(interval);
-  }, [phase]);
-
-  useEffect(() => {
-    const interval = setInterval(() => setShowCursor((v) => !v), 530);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (phase !== "done-cursor") return;
-    const t = setTimeout(() => setCursorRetired(true), 3000);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const handler = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
@@ -297,67 +174,6 @@ export default function HeroSection() {
     window.addEventListener("mousemove", handler, { passive: true });
     return () => window.removeEventListener("mousemove", handler);
   }, []);
-
-  useEffect(() => {
-    prevWordCount.current = bodyWordCount;
-  }, [bodyWordCount]);
-
-  function renderBodySegments() {
-    let wordsSoFar = 0;
-    return BODY_SEGMENTS.map((seg, idx) => {
-      const segTokens = SEGMENT_TOKENS[idx];
-      const segWordCount = SEGMENT_WORD_COUNTS[idx];
-      const segStart = wordsSoFar;
-      wordsSoFar += segWordCount;
-
-      if (bodyWordCount <= segStart) return null;
-
-      const wordsToShow = Math.min(bodyWordCount - segStart, segWordCount);
-      const isLast = bodyWordCount < wordsSoFar;
-
-      let visibleCount = 0;
-      const tokens: { text: string; isNew: boolean }[] = [];
-      for (const token of segTokens) {
-        if (token.trim()) {
-          visibleCount++;
-          if (visibleCount > wordsToShow) break;
-          const globalWordIdx = segStart + visibleCount;
-          tokens.push({ text: token, isNew: globalWordIdx > prevWordCount.current });
-        } else {
-          tokens.push({ text: token, isNew: false });
-        }
-      }
-
-      const renderedText = tokens.map((tok, ti) => (
-        <span key={ti} className={tok.isNew ? "animate-[fadeIn_200ms_ease-out]" : undefined}>
-          {tok.text}
-        </span>
-      ));
-
-      const content = seg.type === "link" ? (
-        <a
-          href={seg.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-sm text-[#3fb950] underline decoration-[#3fb950]/50 decoration-1 underline-offset-[3px] transition-colors hover:text-[#56d364] hover:decoration-[#3fb950] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3fb950]/60 focus-visible:ring-offset-[3px] focus-visible:ring-offset-[#09090b]"
-        >
-          {renderedText}
-          {!isLast && (
-            <HiOutlineExternalLink className="inline-block size-4 shrink-0 align-middle sm:size-5" />
-          )}
-        </a>
-      ) : (
-        <>{renderedText}</>
-      );
-
-      return (
-        <span key={idx}>
-          {content}
-          {isLast && phase === "body" && showCursor && <Cursor />}
-        </span>
-      );
-    });
-  }
 
   return (
     <>
@@ -390,16 +206,10 @@ export default function HeroSection() {
           <div className="relative">
             <span
               aria-hidden="true"
-              className={`pointer-events-none absolute -left-4 top-1 h-[calc(100%-0.25rem)] w-px bg-gradient-to-b from-[#3fb950]/40 via-[#3fb950]/10 to-transparent transition-opacity duration-700 ease-out sm:-left-6 ${
-                greetingVisible ? "opacity-100" : "opacity-0"
-              }`}
+              className="pointer-events-none absolute -left-4 top-1 h-[calc(100%-0.25rem)] w-px bg-gradient-to-b from-[#3fb950]/40 via-[#3fb950]/10 to-transparent sm:-left-6"
             />
 
-            <p
-              className={`text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#a1a1aa] sm:text-[0.8rem] transition-opacity duration-700 ease-out ${
-                greetingVisible ? "opacity-100" : "opacity-0"
-              }`}
-            >
+            <p className="fade-in-block [animation-delay:150ms] text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#a1a1aa] sm:text-[0.8rem]">
               <span aria-hidden="true" className="mr-2.5 text-[#3fb950]">▸</span>
               <span>Software Engineer</span>
               <span className="mx-2 text-[#52525b]">•</span>
@@ -408,26 +218,31 @@ export default function HeroSection() {
               <span>Infrastructure</span>
             </p>
 
-            <h1 className="mt-5 max-w-[36ch] text-balance text-[clamp(2.4rem,6.5vw,4.5rem)] font-light leading-[0.98] tracking-[-0.03em] text-[#f4f4f5]">
-              {displayedName}
-              {phase === "title" && showCursor && <Cursor variant="title" />}
+            <h1 className="fade-in-block [animation-delay:500ms] mt-5 max-w-[36ch] text-balance text-[clamp(2.4rem,6.5vw,4.5rem)] font-light leading-[0.98] tracking-[-0.03em] text-[#f4f4f5]">
+              {FULL_NAME}
             </h1>
 
-            <div
-              className={`transition-opacity duration-500 ease-out ${
-                bodyVisible ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              {bodyVisible && (
-                <p className="mt-6 max-w-[68ch] text-pretty text-[clamp(1.05rem,2.1vw,1.3rem)] leading-[1.5] text-[#a1a1aa] lg:max-w-[56ch]">
-                  {renderBodySegments()}
-                  {phase === "done-cursor" && !cursorRetired && showCursor && <Cursor />}
-                </p>
+            <p className="fade-in-block [animation-delay:850ms] mt-6 max-w-[68ch] text-pretty text-[clamp(1.05rem,2.1vw,1.3rem)] leading-[1.5] text-[#a1a1aa] lg:max-w-[56ch]">
+              {BODY_SEGMENTS.map((seg, idx) =>
+                seg.type === "link" ? (
+                  <a
+                    key={idx}
+                    href={seg.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-sm text-[#3fb950] underline decoration-[#3fb950]/50 decoration-1 underline-offset-[3px] transition-colors hover:text-[#56d364] hover:decoration-[#3fb950] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3fb950]/60 focus-visible:ring-offset-[3px] focus-visible:ring-offset-[#09090b]"
+                  >
+                    {seg.text}
+                    <HiOutlineExternalLink className="inline-block size-4 shrink-0 align-middle" />
+                  </a>
+                ) : (
+                  <span key={idx}>{seg.text}</span>
+                ),
               )}
-            </div>
+            </p>
           </div>
 
-          <StatusCard visible={techVisible} />
+          <StatusCard />
         </div>
       </section>
     </>
