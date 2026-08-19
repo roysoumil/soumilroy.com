@@ -1,19 +1,22 @@
-import type { Metadata } from "next";
-import { Space_Grotesk, Space_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Newsreader, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import ThemeToggle from "./ThemeToggle";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+// Headings only. Body and UI text run on the platform UI font (see
+// globals.css) so the page carries one voice of its own rather than
+// the house sans every other engineer portfolio ships with.
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["300", "400", "600"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const spaceMono = Space_Mono({
-  variable: "--font-space-mono",
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
   subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -59,6 +62,14 @@ export const metadata: Metadata = {
   category: "technology",
 };
 
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
+  ],
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -91,11 +102,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.variable} ${spaceMono.variable} antialiased`}
+        className={`${newsreader.variable} ${plexMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        {/* Runs before the body paints, so a stored choice never flashes the
+            other theme. Falls through to the CSS media query when unset. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var c=t==='dark'?'#0a0a0b':'#fafafa';document.querySelectorAll('meta[name=theme-color]').forEach(function(m){m.setAttribute('content',c)})}catch(e){}",
+          }}
+        />
+        <ThemeToggle />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
