@@ -99,6 +99,52 @@ body {
   }
 }
 
+/* Cursor-tracked border light. The gradient is painted on a pseudo-element
+   and masked down to the 1px ring, so it lights the border itself instead of
+   casting a coloured glow behind the card. inset:-1px puts the ring over the
+   real border, which is why the card must not clip its overflow. */
+.border-light {
+  position: relative;
+}
+
+.border-light::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 50%),
+    var(--accent),
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 220ms ease-out;
+  pointer-events: none;
+}
+
+/* hover:hover only — on touch, :hover latches after a tap and would strand
+   the border lit at wherever the finger last landed. */
+@media (hover: hover) {
+  .border-light:hover::before {
+    opacity: 1;
+  }
+}
+
+.border-light:focus-visible::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-light::before {
+    transition: none;
+  }
+}
+
 .bg-grid {
   background-color: var(--bg);
   background-image:

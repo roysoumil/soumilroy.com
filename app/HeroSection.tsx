@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { HiOutlineExternalLink, HiOutlineMail } from "react-icons/hi";
 import { SiGithub } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
+import trackCursor from "./trackCursor";
 
 const FULL_NAME = "Soumil Roy";
 
@@ -75,7 +76,14 @@ function StatusCard() {
 
   return (
     <aside className="fade-in-block [animation-delay:900ms] lg:sticky lg:top-8 lg:self-start">
-      <div className="overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--surface)] shadow-[var(--card-shadow)]">
+      {/* Two boxes on purpose: overflow-hidden clips to the padding box, so
+          the border light's inset:-1px ring has to live on an unclipped
+          parent while the inner box still rounds off the row hover fills. */}
+      <div
+        onMouseMove={trackCursor}
+        className="border-light rounded-lg border border-[var(--line)] bg-[var(--surface)] shadow-[var(--card-shadow)]"
+      >
+       <div className="overflow-hidden rounded-[7px]">
         <div className="flex items-center justify-between border-b border-[var(--line)] px-5 py-3">
           <div className="flex items-center gap-2.5">
             <span role="status" aria-label={isOffline ? "Offline" : "Available"} className="relative flex size-2">
@@ -156,6 +164,7 @@ function StatusCard() {
             <span className="font-mono text-[12px] text-[var(--text-3)] transition-colors group-hover:text-[var(--accent)]">↗</span>
           </a>
         </div>
+       </div>
       </div>
     </aside>
   );
