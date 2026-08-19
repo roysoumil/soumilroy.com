@@ -19,12 +19,12 @@ const WORK: WorkItem[] = [
     url: "https://empowerreg.ai",
   },
   {
-    title: "soumilroy.com",
+    title: "vedicmaths.ai",
     description:
-      "Personal site — a playground for type, motion, and design ideas I want to try before they land in real products. Source open on GitHub.",
-    tags: ["next.js", "tailwind", "typescript"],
+      "Learning platform for Vedic mathematics — the sixteen sutras, thirty practice topics, timed drills, and a leaderboard. Built for the Vedic Maths Forum, India.",
+    tags: ["tanstack start", "postgres"],
     year: "2026 — now",
-    url: "https://github.com/roysoumil/soumilroy.com",
+    url: "https://vedicmaths.ai",
   },
 ];
 
