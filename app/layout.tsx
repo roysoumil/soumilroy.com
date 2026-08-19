@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import ThemeToggle from "./ThemeToggle";
 
 // Headings only. Body and UI text run on the platform UI font (see
 // globals.css) so the page carries one voice of its own rather than
@@ -101,11 +102,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${newsreader.variable} ${plexMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        {/* Runs before the body paints, so a stored choice never flashes the
+            other theme. Falls through to the CSS media query when unset. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var c=t==='dark'?'#0a0a0b':'#fafafa';document.querySelectorAll('meta[name=theme-color]').forEach(function(m){m.setAttribute('content',c)})}catch(e){}",
+          }}
+        />
+        <ThemeToggle />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

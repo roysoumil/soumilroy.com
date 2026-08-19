@@ -81,7 +81,7 @@ function StatusCard() {
           parent while the inner box still rounds off the row hover fills. */}
       <div
         onMouseMove={trackCursor}
-        className="border-light rounded-lg border border-[var(--line)] bg-[var(--surface)] shadow-[var(--card-shadow)]"
+        className="border-light relative rounded-lg border border-[var(--line)] bg-[var(--surface)] shadow-[var(--card-shadow)]"
       >
        <div className="overflow-hidden rounded-[7px]">
         <div className="flex items-center justify-between border-b border-[var(--line)] px-5 py-3">
@@ -211,13 +211,8 @@ export default function HeroSection() {
           ))}
         </div>
 
-        <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-y-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-x-14 xl:grid-cols-[minmax(0,1fr)_360px]">
-          <div className="relative text-left">
-            <span
-              aria-hidden="true"
-              className="fade-in-block [animation-delay:150ms] pointer-events-none absolute -left-4 top-1 h-[calc(100%-0.25rem)] w-px bg-[var(--line)] sm:-left-6"
-            />
-
+        <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-y-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center lg:gap-x-14 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="text-left">
             <h1 className="fade-in-block [animation-delay:150ms] text-left font-serif text-[clamp(2.75rem,7.5vw,5.25rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--text)]">
               {FULL_NAME}
             </h1>
