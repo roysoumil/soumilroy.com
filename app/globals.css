@@ -1,22 +1,72 @@
 @import "tailwindcss";
 
+/* Light is the default and dark is opt-in via the OS preference, so every
+   colour on the site resolves through these tokens instead of a hard-coded
+   hex. Adding a surface or a text tone means adding it in both blocks. */
 :root {
-  --background: #09090b;
-  --foreground: #e4e4e7;
+  color-scheme: light dark;
+
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --line: #e2e2e6;
+  --line-soft: #ededf0;
+
+  --text: #0f0f11;
+  --text-2: #3a3a42;
+  --text-3: #55555f;
+
+  --accent: #14762f;
+  --accent-hi: #0f5c24;
+  --accent-wash: rgba(20, 118, 47, 0.07);
+  --accent-ring: rgba(20, 118, 47, 0.45);
+
+  --grid-line: rgba(15, 15, 17, 0.05);
+  --spotlight: rgba(20, 118, 47, 0.07);
+  --card-shadow: 0 1px 2px rgba(15, 15, 17, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0b;
+    --surface: #141417;
+    --line: #2a2a30;
+    --line-soft: #1e1e23;
+
+    /* Body copy sits at L >= 0.87 on purpose: mid-grey on black is both a
+       contrast failure and the tell of an unconsidered dark theme. */
+    --text: #f5f5f7;
+    --text-2: #dcdce1;
+    --text-3: #c2c2ca;
+
+    --accent: #3fb950;
+    --accent-hi: #6fdc7d;
+    --accent-wash: rgba(63, 185, 80, 0.08);
+    --accent-ring: rgba(63, 185, 80, 0.5);
+
+    --grid-line: rgba(245, 245, 247, 0.035);
+    --spotlight: rgba(63, 185, 80, 0.12);
+    --card-shadow: none;
+  }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-space-grotesk);
-  --font-mono: var(--font-space-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-2);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-feature-settings: "kern", "calt";
+}
+
+::selection {
+  background: var(--accent-wash);
+  color: var(--text);
 }
 
 .font-mono {
@@ -49,17 +99,16 @@ body {
   }
 }
 
-.bg-dark-grid {
-  background-color: #09090b;
+.bg-grid {
+  background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(63, 185, 80, 0.07), transparent),
-    linear-gradient(to right, rgba(228, 228, 231, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(228, 228, 231, 0.03) 1px, transparent 1px);
-  background-size: 100% 100%, 48px 48px, 48px 48px;
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 @media print {
-  html, body, main, section, aside, footer, .bg-dark-grid {
+  html, body, main, section, aside, footer, .bg-grid {
     background: white !important;
     background-image: none !important;
     color: black !important;
