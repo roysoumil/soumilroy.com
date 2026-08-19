@@ -7,7 +7,7 @@ import { FaLinkedin } from "react-icons/fa";
 
 const FULL_NAME = "Soumil Roy";
 
-const ROLES = ["Software engineer", "Full stack", "Infrastructure"];
+const ROLES = ["Software engineer", "Full stack", "Infrastructure", "AI"];
 
 const BODY_SEGMENTS: { type: "text" | "link"; text: string; href?: string }[] = [
   { type: "text", text: "I build software end-to-end — from the interface down to the systems underneath. At " },
@@ -213,11 +213,14 @@ export default function HeroSection() {
               {FULL_NAME}
             </h1>
 
-            <p className="fade-in-block [animation-delay:400ms] mt-4 text-left text-[0.95rem] text-[var(--text-2)]">
-              <span aria-hidden="true" className="mr-2.5 text-[var(--accent)]">▸</span>
+            {/* Flex rather than inline text: the role names must not break
+                mid-phrase, and there is no whitespace between the spans to
+                break on, so the line needs wrap points of its own. */}
+            <p className="fade-in-block [animation-delay:400ms] mt-4 flex flex-wrap items-baseline gap-x-2 text-left text-[0.95rem] text-[var(--text-2)]">
+              <span aria-hidden="true" className="mr-0.5 text-[var(--accent)]">▸</span>
               {ROLES.map((role, idx) => (
-                <span key={role}>
-                  {idx > 0 && <span aria-hidden="true" className="mx-2 text-[var(--line)]">/</span>}
+                <span key={role} className="flex items-baseline gap-x-2">
+                  {idx > 0 && <span aria-hidden="true" className="text-[var(--line)]">/</span>}
                   <span className="whitespace-nowrap">{role}</span>
                 </span>
               ))}

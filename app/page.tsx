@@ -14,7 +14,7 @@ const WORK: WorkItem[] = [
     title: "empowerreg.ai",
     description:
       "Regulatory intelligence platform. Building the infrastructure layer — distributed ingestion, search, and processing at scale.",
-    tags: ["go", "azure", "postgres"],
+    tags: ["go", "azure", "python", "mysql"],
     year: "2024 — now",
     url: "https://empowerreg.ai",
   },
