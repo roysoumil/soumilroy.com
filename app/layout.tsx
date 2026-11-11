@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import ThemeToggle from "./ThemeToggle";
 
 // Headings only. Body and UI text run on the platform UI font (see
 // globals.css) so the page carries one voice of its own rather than
@@ -24,7 +23,7 @@ const siteUrl = "https://soumilroy.com";
 
 const siteTitle = "Soumil Roy — Software Engineer";
 const siteDescription =
-  "Software engineer building end-to-end — from the interface down to the infrastructure. Currently at empowerreg.ai.";
+  "Software engineer building across the whole stack, from the interface to the platform under it. Full stack, infrastructure and AI. Open to freelance and consulting.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -63,11 +62,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  colorScheme: "light dark",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
-  ],
+  colorScheme: "dark",
+  themeColor: "#0a0a0b",
 };
 
 const jsonLd = {
@@ -107,15 +103,6 @@ export default function RootLayout({
         className={`${newsreader.variable} ${plexMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        {/* Runs before the body paints, so a stored choice never flashes the
-            other theme. Falls through to the CSS media query when unset. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var c=t==='dark'?'#0a0a0b':'#fafafa';document.querySelectorAll('meta[name=theme-color]').forEach(function(m){m.setAttribute('content',c)})}catch(e){}",
-          }}
-        />
-        <ThemeToggle />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

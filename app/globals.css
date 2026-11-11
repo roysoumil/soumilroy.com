@@ -1,62 +1,8 @@
 @import "tailwindcss";
 
-/* Light is the default and dark is opt-in via the OS preference, so every
-   colour on the site resolves through these tokens instead of a hard-coded
-   hex. Adding a surface or a text tone means adding it in both blocks. */
+/* Dark only. Every colour on the site resolves through these tokens instead
+   of a hard-coded hex. */
 :root {
-  color-scheme: light;
-
-  --bg: #fafafa;
-  --surface: #ffffff;
-  --line: #e2e2e6;
-  --line-soft: #ededf0;
-
-  --text: #0f0f11;
-  --text-2: #3a3a42;
-  --text-3: #55555f;
-
-  --accent: #14762f;
-  --accent-hi: #0f5c24;
-  --accent-wash: rgba(20, 118, 47, 0.07);
-  --accent-ring: rgba(20, 118, 47, 0.45);
-
-  --grid-line: rgba(15, 15, 17, 0.05);
-  --spotlight: rgba(20, 118, 47, 0.07);
-  --card-shadow: 0 1px 2px rgba(15, 15, 17, 0.05);
-}
-
-/* The dark palette is written twice on purpose: one block answers the OS
-   preference, the other answers an explicit choice from the toggle. CSS
-   cannot share declarations across a media-query boundary, so the two must
-   be kept identical by hand. The :not() keeps an explicit "light" choice
-   from being overridden by a dark OS setting. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-
-    --bg: #0a0a0b;
-    --surface: #141417;
-    --line: #2a2a30;
-    --line-soft: #1e1e23;
-
-    /* Body copy sits at L >= 0.87 on purpose: mid-grey on black is both a
-       contrast failure and the tell of an unconsidered dark theme. */
-    --text: #f5f5f7;
-    --text-2: #dcdce1;
-    --text-3: #c2c2ca;
-
-    --accent: #3fb950;
-    --accent-hi: #6fdc7d;
-    --accent-wash: rgba(63, 185, 80, 0.08);
-    --accent-ring: rgba(63, 185, 80, 0.5);
-
-    --grid-line: rgba(245, 245, 247, 0.035);
-    --spotlight: rgba(63, 185, 80, 0.12);
-    --card-shadow: none;
-  }
-}
-
-:root[data-theme="dark"] {
   color-scheme: dark;
 
   --bg: #0a0a0b;
@@ -77,7 +23,15 @@
 
   --grid-line: rgba(245, 245, 247, 0.035);
   --spotlight: rgba(63, 185, 80, 0.12);
-  --card-shadow: none;
+  /* A real (invisible) shadow rather than `none`: Tailwind composes shadows
+     and focus rings into one box-shadow list, and `none` inside that list
+     voids the whole declaration, taking the focus ring with it. */
+  --card-shadow: 0 0 #0000;
+  --plate-line: #3d3d47;
+  --plate-side: #2b2b33;
+  --plate-side-lit: #1f1f25;
+  --plate-cast: rgba(0, 0, 0, 0.4);
+  --shot-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
 }
 
 @theme inline {
@@ -104,9 +58,11 @@ body {
   font-variant-numeric: slashed-zero;
 }
 
+/* Slides with `translate`, not `transform`, so an element can fade in and
+   still own its transform. */
 @keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(8px); visibility: visible; }
-  100% { opacity: 1; transform: translateY(0); visibility: visible; }
+  0% { opacity: 0; translate: 0 8px; visibility: visible; }
+  100% { opacity: 1; translate: 0 0; visibility: visible; }
 }
 
 /* Longhand on purpose: the `animation` shorthand resets `animation-delay`
@@ -172,6 +128,416 @@ body {
   }
 }
 
+/* ── Hero stack ─────────────────────────────────────────────────────────
+   An exploded view of the stack, drawn with CSS 3D transforms. Geometry:
+   the stage is a zero-size point at (--cx, 50%) tipped into an isometric
+   view; each layer is a square plate centred on it and lifted along Z by
+   its level. Everything between the stage and a 3D child must keep
+   transform-style: preserve-3d, and must not take opacity, overflow or
+   mask — any of those flattens the subtree. Fades go on leaf elements. */
+.stack-scene {
+  --s: 136px;
+  --gap: 56px;
+  --cx: 96px;
+  --thick: 5px;
+  position: relative;
+  height: 350px;
+  perspective: 3200px;
+  perspective-origin: var(--cx) 50%;
+  /* Draggable (see HeroSection). pan-y leaves vertical scrolling to the
+     browser, so on touch only a sideways drag turns the stack. */
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stack-scene[data-dragging] {
+  cursor: grabbing;
+}
+
+@media (min-width: 640px) {
+  .stack-scene {
+    --s: 240px;
+    --gap: 70px;
+    --cx: 190px;
+    --thick: 8px;
+    height: 510px;
+  }
+}
+
+.stack-stage {
+  position: absolute;
+  left: var(--cx);
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(60deg + var(--tilt-x, 0deg))) rotateZ(calc(-45deg + var(--tilt-z, 0deg)));
+}
+
+.stack-layer {
+  position: absolute;
+  left: calc(var(--s) / -2);
+  top: calc(var(--s) / -2);
+  width: var(--s);
+  height: var(--s);
+  transform-style: preserve-3d;
+  transform: translateZ(calc((var(--level) - var(--mid)) * var(--gap)));
+  animation: stack-open 1500ms cubic-bezier(0.22, 1, 0.36, 1) 350ms backwards;
+}
+
+/* Starts as a closed deck and fans out to the resting transform above. */
+@keyframes stack-open {
+  from { transform: translateZ(calc((var(--level) - var(--mid)) * 8px)); }
+}
+
+@keyframes stack-fade {
+  from { opacity: 0; }
+}
+
+.stack-plate {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  border: 1px solid var(--plate-line);
+  border-radius: 3px;
+  background-color: color-mix(in srgb, var(--surface) 72%, transparent);
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: calc(var(--s) / 6) calc(var(--s) / 6);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms ease-out;
+}
+
+/* Slab thickness: two walls hung from the plate's near edges and folded
+   down. Only the bottom and left edges ever face the camera — the drag is
+   clamped well short of the 45° turn that would show a third. */
+.stack-side {
+  position: absolute;
+  background: var(--plate-side);
+  transition: background-color 200ms ease-out;
+}
+
+.stack-side.is-front {
+  left: -1px;
+  right: -1px;
+  top: 100%;
+  height: var(--thick);
+  transform-origin: 50% 0;
+  transform: rotateX(-90deg);
+}
+
+.stack-side.is-left {
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  width: var(--thick);
+  transform-origin: 0 50%;
+  transform: rotateY(90deg);
+  background: var(--plate-side-lit);
+}
+
+/* A blurred sheet resting just above the plate below (the bottom plate
+   drops its own onto an imagined floor). */
+.stack-cast {
+  position: absolute;
+  inset: 4%;
+  border-radius: 12%;
+  background: var(--plate-cast);
+  filter: blur(calc(var(--s) / 14));
+  transform: translateZ(calc(var(--drop, var(--gap)) * -1 + var(--thick)));
+  pointer-events: none;
+  animation: stack-fade 700ms ease-out 1300ms backwards;
+}
+
+.stack-layer[data-floor] .stack-cast {
+  --drop: calc(var(--gap) * 0.55);
+}
+
+.stack-node {
+  position: absolute;
+  /* Raised off the plate so the pieces shift against it as the stack turns. */
+  transform: translate(-50%, -50%) translateZ(calc(var(--thick) * 0.75));
+  border: 1px solid var(--plate-line);
+  border-radius: 3px;
+  background: var(--bg);
+  transition: border-color 200ms ease-out;
+}
+
+.stack-node.is-round {
+  border-radius: 50%;
+}
+
+.stack-node.is-window::before {
+  content: "";
+  position: absolute;
+  inset: 16% 0 auto;
+  border-top: 1px solid var(--plate-line);
+}
+
+/* Rows of content inside the window. */
+.stack-node.is-window::after {
+  content: "";
+  position: absolute;
+  inset: 30% 34% 14% 10%;
+  background: repeating-linear-gradient(to bottom, var(--plate-line) 0 2px, transparent 2px 22%);
+}
+
+/* A link lies in its plate and is stood upright about its top edge, so it
+   rises exactly one gap to the plate above. */
+.stack-link {
+  position: absolute;
+  width: 2px;
+  height: var(--gap);
+  margin-left: -1px;
+  transform-origin: 50% 0;
+  transform: rotateX(90deg);
+  background: color-mix(in srgb, var(--accent) 62%, transparent);
+  animation: stack-fade 600ms ease-out 1700ms backwards;
+}
+
+.stack-packet {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 8px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  opacity: 0;
+  animation: packet-up 3s linear infinite;
+}
+
+.stack-packet.is-down {
+  animation-name: packet-down;
+}
+
+@keyframes packet-up {
+  0% { transform: translateY(0); opacity: 0; }
+  12%, 88% { opacity: 1; }
+  100% { transform: translateY(var(--gap)); opacity: 0; }
+}
+
+@keyframes packet-down {
+  0% { transform: translateY(var(--gap)); opacity: 0; }
+  12%, 88% { opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+/* Pinned to the plate's right-hand corner, then rotated by the inverse of
+   the stage transform so the text faces the screen whatever the tilt. The
+   trailing translate therefore runs in screen space. */
+.stack-label {
+  position: absolute;
+  left: 100%;
+  top: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* Sits past the plate's edge, where shrink-to-fit has no room and would
+     wrap every word. */
+  width: max-content;
+  transform-origin: 0 0;
+  transform: rotateZ(calc(45deg - var(--tilt-z, 0deg))) rotateX(calc(-60deg - var(--tilt-x, 0deg))) translate(6px, -50%);
+  animation: stack-fade 500ms ease-out 1500ms backwards;
+}
+
+.stack-label::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 1px;
+  background: var(--plate-line);
+  transition: background-color 200ms ease-out;
+}
+
+.stack-label-name,
+.stack-label-tech {
+  display: block;
+  transition: color 200ms ease-out;
+}
+
+.stack-label-name {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.stack-label-tech {
+  max-width: 110px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-3);
+}
+
+@media (min-width: 640px) {
+  .stack-label {
+    gap: 8px;
+    white-space: nowrap;
+    transform: rotateZ(calc(45deg - var(--tilt-z, 0deg))) rotateX(calc(-60deg - var(--tilt-x, 0deg))) translate(10px, -50%);
+  }
+
+  .stack-label::before {
+    width: 18px;
+  }
+
+  .stack-label-tech {
+    max-width: none;
+  }
+}
+
+@media (hover: hover) {
+  .stack-layer:hover .stack-plate {
+    transform: translateZ(12px);
+    border-color: var(--accent);
+  }
+
+  .stack-layer:hover .stack-node {
+    border-color: var(--accent-ring);
+  }
+
+  .stack-layer:hover .stack-side {
+    background: color-mix(in srgb, var(--accent) 55%, var(--surface));
+  }
+
+  .stack-layer:hover .stack-label::before {
+    background: var(--accent);
+  }
+
+  .stack-layer:hover .stack-label-name,
+  .stack-layer:hover .stack-label-tech {
+    color: var(--accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-layer,
+  .stack-link,
+  .stack-cast,
+  .stack-label {
+    animation: none;
+  }
+
+  .stack-plate {
+    transition: none;
+  }
+
+  .stack-packet {
+    display: none;
+  }
+}
+
+/* Work-card stack: the hero stack in miniature, flat plates only. The gap
+   lives in --mini-gap on the wrapper so one hover rule fans every plate. */
+.mini-stack {
+  --mini-s: 68px;
+  --mini-gap: 12px;
+  position: relative;
+  flex: none;
+  width: 104px;
+  height: 128px;
+}
+
+.mini-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(60deg) rotateZ(-45deg);
+}
+
+.mini-plate {
+  position: absolute;
+  left: calc(var(--mini-s) / -2);
+  top: calc(var(--mini-s) / -2);
+  width: var(--mini-s);
+  height: var(--mini-s);
+  border: 1px solid var(--plate-line);
+  border-radius: 2px;
+  background: var(--surface);
+  transform: translateZ(calc((var(--level) - 2) * var(--mini-gap)));
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mini-plate.is-lit {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 20%, var(--surface));
+}
+
+@media (hover: hover) {
+  .group:hover .mini-stack {
+    --mini-gap: 19px;
+  }
+}
+
+.group:focus-visible .mini-stack {
+  --mini-gap: 19px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-plate {
+    transition: none;
+  }
+}
+
+/* Work-card screenshot. Flat on small screens; from lg up it sits turned
+   away and swings to face the viewer on hover or keyboard focus. */
+.shot-scene {
+  perspective: 1400px;
+}
+
+.shot {
+  overflow: hidden;
+  border: 1px solid var(--plate-line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shot-shadow);
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.shot-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--plate-line);
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.shot-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (min-width: 1024px) {
+  .shot {
+    transform: rotateY(-16deg) rotateX(5deg) scale(0.96);
+  }
+
+  .group:focus-visible .shot {
+    transform: none;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) {
+  .group:hover .shot {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot {
+    transition: none;
+  }
+}
+
 .bg-grid {
   background-color: var(--bg);
   background-image:
@@ -180,58 +546,7 @@ body {
   background-size: 48px 48px;
 }
 
-/* Theme toggle. Knob position and icon emphasis are driven by CSS rather
-   than React state so the control is already correct on the first paint,
-   before hydration — the same three-way selector the palette uses. */
-.theme-knob {
-  transform: translateY(0);
-  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.theme-toggle .icon-sun {
-  color: var(--accent);
-}
-
-.theme-toggle .icon-moon {
-  color: var(--text-3);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-knob {
-    transform: translateY(100%);
-  }
-
-  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
-    color: var(--text-3);
-  }
-
-  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
-    color: var(--accent);
-  }
-}
-
-:root[data-theme="dark"] .theme-knob {
-  transform: translateY(100%);
-}
-
-:root[data-theme="dark"] .theme-toggle .icon-sun {
-  color: var(--text-3);
-}
-
-:root[data-theme="dark"] .theme-toggle .icon-moon {
-  color: var(--accent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .theme-knob {
-    transition: none;
-  }
-}
-
 @media print {
-  .theme-toggle {
-    display: none !important;
-  }
   html, body, main, section, aside, footer, .bg-grid {
     background: white !important;
     background-image: none !important;
