@@ -1,35 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { HiOutlineExternalLink, HiOutlineMail } from "react-icons/hi";
+import { HiOutlineMail } from "react-icons/hi";
 import { SiGithub } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 import trackCursor from "./trackCursor";
+import StackScene from "./StackScene";
 
 const FULL_NAME = "Soumil Roy";
 
-const ROLES = ["Software engineer", "Full stack", "Infrastructure", "AI"];
+const ROLE_LINE = "Software engineer, full stack, infrastructure and AI";
 
-const BODY_SEGMENTS: { type: "text" | "link"; text: string; href?: string }[] = [
-  { type: "text", text: "I build software end-to-end — from the interface down to the systems underneath. At " },
-  { type: "link", text: "empowerreg.ai", href: "https://empowerreg.ai" },
-  { type: "text", text: " I work on the infrastructure that makes the rest possible." },
-];
-
-const STACK = ["azure", "docker", "go", "mysql", "postgres", "python", "react", "typescript"];
-
-const CONSTELLATION = [
-  { top: "8%", left: "6%", size: 2, opacity: 0.45 },
-  { top: "14%", left: "82%", size: 1.5, opacity: 0.35 },
-  { top: "22%", left: "94%", size: 2.5, opacity: 0.5 },
-  { top: "38%", left: "3%", size: 1.5, opacity: 0.3 },
-  { top: "46%", left: "78%", size: 2, opacity: 0.4 },
-  { top: "58%", left: "97%", size: 1.5, opacity: 0.35 },
-  { top: "72%", left: "5%", size: 2, opacity: 0.4 },
-  { top: "78%", left: "55%", size: 1.5, opacity: 0.3 },
-  { top: "85%", left: "88%", size: 2, opacity: 0.45 },
-  { top: "92%", left: "18%", size: 1.5, opacity: 0.35 },
-];
+const STATEMENT = "I build software across the whole stack, from the interface to the platform under it.";
 
 const TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Asia/Kolkata",
@@ -74,18 +56,20 @@ function StatusCard() {
     };
   }, []);
 
+  const iconLink =
+    "grid size-10 place-items-center rounded-md border border-[var(--line)] text-[var(--text-2)] transition-colors hover:border-[var(--accent-ring)] hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]";
+
   return (
-    <aside className="fade-in-block [animation-delay:900ms] lg:sticky lg:top-8 lg:self-start">
-      {/* Two boxes on purpose: overflow-hidden clips to the padding box, so
-          the border light's inset:-1px ring has to live on an unclipped
-          parent while the inner box still rounds off the row hover fills. */}
+    <aside className="fade-in-block [animation-delay:900ms]">
       <div
         onMouseMove={trackCursor}
-        className="border-light relative rounded-lg border border-[var(--line)] bg-[var(--surface)] shadow-[var(--card-shadow)]"
+        className="border-light relative flex flex-col gap-6 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--card-shadow)] lg:flex-row lg:items-end lg:justify-between lg:p-8"
       >
-       <div className="overflow-hidden rounded-[7px]">
-        <div className="flex items-center justify-between border-b border-[var(--line)] px-5 py-3">
-          <div className="flex items-center gap-2.5">
+        <div>
+          <p className="text-balance font-serif text-[clamp(1.5rem,3vw,2.1rem)] font-light leading-tight tracking-[-0.015em] text-[var(--text)]">
+            Open to freelance and consulting work.
+          </p>
+          <p className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-[var(--text-3)]">
             <span role="status" aria-label={isOffline ? "Offline" : "Available"} className="relative flex size-2">
               {!isOffline && (
                 <span aria-hidden="true" className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--accent)] opacity-60" />
@@ -95,162 +79,180 @@ function StatusCard() {
                 className={`relative inline-flex size-2 rounded-full ${isOffline ? "bg-[var(--text-3)]" : "bg-[var(--accent)]"}`}
               />
             </span>
-            <span className="text-[13px] text-[var(--text-2)]">
-              {isOffline ? "Offline" : "Online"}
-            </span>
-          </div>
-          <span className="font-mono text-[12px] tabular-nums text-[var(--text-3)]">
-            {time ? `${time} IST` : "~/now"}
-          </span>
+            {isOffline ? "Offline, back at 09:00 IST" : "Online now"}
+            <span className="font-mono text-[12px] tabular-nums">{time ? `${time} IST` : "~/now"}</span>
+          </p>
         </div>
 
-        <dl className="space-y-4 px-5 py-5 text-sm">
-          <div>
-            <dt className="text-[13px] text-[var(--text-3)]">Focus</dt>
-            <dd className="mt-1 text-[var(--text)]">Pipelines and platform reliability</dd>
-          </div>
-          <div>
-            <dt className="text-[13px] text-[var(--text-3)]">Shipping</dt>
-            <dd className="mt-1 text-[var(--text)]">Platform at empowerreg.ai</dd>
-          </div>
-          <div>
-            <dt className="text-[13px] text-[var(--text-3)]">Stack</dt>
-            <dd className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-[13px] lowercase text-[var(--text-2)]">
-              {STACK.map((tech) => (
-                <span key={tech}>{tech}</span>
-              ))}
-            </dd>
-          </div>
-        </dl>
-
-        <button
-          type="button"
-          onClick={copyEmail}
-          aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
-          className="group flex w-full items-center justify-between border-t border-[var(--line)] px-5 py-3 text-left text-sm text-[var(--text-2)] transition-colors hover:bg-[var(--accent-wash)] hover:text-[var(--accent)] focus-visible:bg-[var(--accent-wash)] focus-visible:text-[var(--accent)] focus-visible:outline-none"
-        >
-          <span className="flex items-center gap-2.5">
-            <HiOutlineMail aria-hidden="true" className="size-4 shrink-0 text-[var(--text-3)] transition-colors group-hover:text-[var(--accent)]" />
-            <span>{copied ? "Copied to clipboard" : "Say hello"}</span>
-          </span>
-          <span className="font-mono text-[12px] tabular-nums text-[var(--text-3)] transition-colors group-hover:text-[var(--accent)]">
-            soumilroy@pm.me {copied ? "✓" : "→"}
-          </span>
-        </button>
-
-        <div className="flex border-t border-[var(--line)] text-sm">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            type="button"
+            onClick={copyEmail}
+            aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
+            className="flex h-10 w-full items-center justify-center gap-2.5 rounded-md bg-[var(--accent)] px-4 text-sm font-medium text-[var(--bg)] transition-colors hover:bg-[var(--accent-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)] sm:w-auto"
+          >
+            <HiOutlineMail aria-hidden="true" className="size-4 shrink-0" />
+            {/* Fixed width so the button does not jump when the label swaps. */}
+            <span className="min-w-[15ch] text-left font-mono text-[13px]">
+              {copied ? "Copied" : "soumilroy@pm.me"}
+            </span>
+          </button>
           <a
             href="https://github.com/roysoumil"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-1 items-center justify-between border-r border-[var(--line)] px-5 py-3 text-[var(--text-2)] transition-colors hover:bg-[var(--accent-wash)] hover:text-[var(--accent)] focus-visible:bg-[var(--accent-wash)] focus-visible:text-[var(--accent)] focus-visible:outline-none"
+            aria-label="GitHub"
+            className={iconLink}
           >
-            <span className="flex items-center gap-2.5">
-              <SiGithub aria-hidden="true" className="size-4 shrink-0 text-[var(--text-3)] transition-colors group-hover:text-[var(--accent)]" />
-              <span>GitHub</span>
-            </span>
-            <span className="font-mono text-[12px] text-[var(--text-3)] transition-colors group-hover:text-[var(--accent)]">↗</span>
+            <SiGithub aria-hidden="true" className="size-4" />
           </a>
           <a
             href="https://www.linkedin.com/in/soumilroy/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-1 items-center justify-between px-5 py-3 text-[var(--text-2)] transition-colors hover:bg-[var(--accent-wash)] hover:text-[var(--accent)] focus-visible:bg-[var(--accent-wash)] focus-visible:text-[var(--accent)] focus-visible:outline-none"
+            aria-label="LinkedIn"
+            className={iconLink}
           >
-            <span className="flex items-center gap-2.5">
-              <FaLinkedin aria-hidden="true" className="size-4 shrink-0 text-[var(--text-3)] transition-colors group-hover:text-[var(--accent)]" />
-              <span>LinkedIn</span>
-            </span>
-            <span className="font-mono text-[12px] text-[var(--text-3)] transition-colors group-hover:text-[var(--accent)]">↗</span>
+            <FaLinkedin aria-hidden="true" className="size-4" />
           </a>
         </div>
-       </div>
       </div>
     </aside>
   );
 }
 
 export default function HeroSection() {
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const sectionRef = useRef<HTMLElement>(null);
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
+  // The stack's tilt is the sum of two inputs: where the cursor is on the
+  // page, and how far the stack itself has been dragged. Both land in
+  // --tilt-x / --tilt-z as custom properties, so nothing re-renders; a rAF
+  // loop eases toward the target and stops once it has settled. Letting go
+  // of a drag just zeroes its share, so the stack swings back on its own.
   useEffect(() => {
+    const section = sectionRef.current;
+    const spotlight = spotlightRef.current;
+    const scene = section?.querySelector<HTMLElement>(".stack-scene");
+    if (!section || !spotlight || !scene) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const handler = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setMousePos({ x, y });
+
+    const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+
+    let hoverX = 0;
+    let hoverZ = 0;
+    let dragX = 0;
+    let dragZ = 0;
+    let x = 0;
+    let z = 0;
+    let frame = 0;
+    let dragStart: { x: number; y: number } | null = null;
+
+    const tick = () => {
+      const targetX = hoverX + dragX;
+      const targetZ = hoverZ + dragZ;
+      x += (targetX - x) * 0.08;
+      z += (targetZ - z) * 0.08;
+      section.style.setProperty("--tilt-x", `${x.toFixed(2)}deg`);
+      section.style.setProperty("--tilt-z", `${z.toFixed(2)}deg`);
+      const settled = Math.abs(targetX - x) < 0.01 && Math.abs(targetZ - z) < 0.01;
+      frame = settled ? 0 : requestAnimationFrame(tick);
     };
-    window.addEventListener("mousemove", handler, { passive: true });
-    return () => window.removeEventListener("mousemove", handler);
+    const wake = () => {
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      spotlight.style.setProperty("--sx", `${e.clientX}px`);
+      spotlight.style.setProperty("--sy", `${e.clientY}px`);
+      hoverZ = ((e.clientX / window.innerWidth) * 2 - 1) * 9;
+      hoverX = ((e.clientY / window.innerHeight) * 2 - 1) * 5;
+      wake();
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      dragStart = { x: e.clientX, y: e.clientY };
+      scene.setPointerCapture(e.pointerId);
+      scene.setAttribute("data-dragging", "");
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!dragStart) return;
+      // Dragging right swings the near corner right, which is a negative
+      // turn about Z. Kept under 45° in total with the hover share so a
+      // plate never shows an edge that has no wall (see .stack-side).
+      dragZ = clamp((e.clientX - dragStart.x) * -0.25, -32, 32);
+      // Vertical drags belong to page scrolling on touch.
+      dragX = e.pointerType === "touch" ? 0 : clamp((e.clientY - dragStart.y) * -0.1, -10, 10);
+      wake();
+    };
+    const onPointerEnd = () => {
+      if (!dragStart) return;
+      dragStart = null;
+      dragX = 0;
+      dragZ = 0;
+      scene.removeAttribute("data-dragging");
+      wake();
+    };
+
+    // Cursor-following only makes sense with a cursor; dragging works anywhere.
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    if (canHover) window.addEventListener("mousemove", onMouseMove, { passive: true });
+    scene.addEventListener("pointerdown", onPointerDown);
+    scene.addEventListener("pointermove", onPointerMove);
+    scene.addEventListener("pointerup", onPointerEnd);
+    scene.addEventListener("pointercancel", onPointerEnd);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      scene.removeEventListener("pointerdown", onPointerDown);
+      scene.removeEventListener("pointermove", onPointerMove);
+      scene.removeEventListener("pointerup", onPointerEnd);
+      scene.removeEventListener("pointercancel", onPointerEnd);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
     <>
       <div
+        ref={spotlightRef}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 transition-[background] duration-300 ease-out [@media(hover:none)]:hidden"
+        className="pointer-events-none fixed inset-0 z-0 [@media(hover:none)]:hidden"
         style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, var(--spotlight), transparent 65%)`,
+          background: "radial-gradient(600px circle at var(--sx, 50%) var(--sy, 50%), var(--spotlight), transparent 65%)",
         }}
       />
 
-      <section className="relative overflow-hidden px-6 pb-10 pt-20 sm:px-10 sm:pb-14 sm:pt-28 lg:px-16 lg:pb-16 lg:pt-32">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
-          {CONSTELLATION.map((star, i) => (
-            <span
-              key={i}
-              className="absolute rounded-full bg-[var(--accent)]"
-              style={{
-                top: star.top,
-                left: star.left,
-                width: star.size,
-                height: star.size,
-                opacity: star.opacity,
-              }}
-            />
-          ))}
-        </div>
+      <section
+        ref={sectionRef}
+        className="relative overflow-hidden px-6 pb-10 pt-16 sm:px-10 sm:pb-14 sm:pt-20 lg:px-16 lg:pb-16 lg:pt-24"
+      >
+        <div className="relative z-10 mx-auto w-full max-w-7xl">
+          <div className="grid gap-y-6 xl:grid-cols-[minmax(0,1fr)_540px] xl:items-center xl:gap-x-10">
+            <div className="text-left">
+              {/* The name stays the page's h1 (it is what people search
+                  for) even though the statement below is set larger. */}
+              <div className="fade-in-block [animation-delay:150ms] flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[0.95rem] text-[var(--text-2)]">
+                <h1 className="font-serif text-[1.35rem] font-normal text-[var(--text)]">{FULL_NAME}</h1>
+                {/* Only when the roles fit beside the name; alone on a line it
+                    is a stray mark. */}
+                <span aria-hidden="true" className="hidden text-[var(--line)] sm:inline">/</span>
+                <p>{ROLE_LINE}</p>
+              </div>
 
-        <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-y-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center lg:gap-x-14 xl:grid-cols-[minmax(0,1fr)_360px]">
-          <div className="text-left">
-            <h1 className="fade-in-block [animation-delay:150ms] text-left font-serif text-[clamp(2.75rem,7.5vw,5.25rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--text)]">
-              {FULL_NAME}
-            </h1>
+              <p className="fade-in-block [animation-delay:400ms] mt-6 max-w-[15em] text-balance font-serif text-[clamp(2rem,4.6vw,3.6rem)] font-light leading-[1.08] tracking-[-0.02em] text-[var(--text)]">
+                {STATEMENT}
+              </p>
+            </div>
 
-            {/* Flex rather than inline text: the role names must not break
-                mid-phrase, and there is no whitespace between the spans to
-                break on, so the line needs wrap points of its own. */}
-            <p className="fade-in-block [animation-delay:400ms] mt-4 flex flex-wrap items-baseline gap-x-2 text-left text-[0.95rem] text-[var(--text-2)]">
-              <span aria-hidden="true" className="mr-0.5 text-[var(--accent)]">▸</span>
-              {ROLES.map((role, idx) => (
-                <span key={role} className="flex items-baseline gap-x-2">
-                  {idx > 0 && <span aria-hidden="true" className="text-[var(--line)]">/</span>}
-                  <span className="whitespace-nowrap">{role}</span>
-                </span>
-              ))}
-            </p>
-
-            <p className="fade-in-block [animation-delay:650ms] mt-7 max-w-[68ch] text-pretty text-left text-[clamp(1.05rem,2.1vw,1.25rem)] leading-[1.55] text-[var(--text-2)] lg:max-w-[54ch]">
-              {BODY_SEGMENTS.map((seg, idx) =>
-                seg.type === "link" ? (
-                  <a
-                    key={idx}
-                    href={seg.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 rounded-sm text-[var(--accent)] underline decoration-[var(--accent-ring)] decoration-1 underline-offset-[3px] transition-colors hover:text-[var(--accent-hi)] hover:decoration-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-[3px] focus-visible:ring-offset-[var(--bg)]"
-                  >
-                    {seg.text}
-                    <HiOutlineExternalLink className="inline-block size-4 shrink-0 align-middle" />
-                  </a>
-                ) : (
-                  <span key={idx}>{seg.text}</span>
-                ),
-              )}
-            </p>
+            <div className="fade-in-block [animation-delay:300ms]">
+              <StackScene />
+            </div>
           </div>
 
-          <StatusCard />
+          <div className="mt-10 xl:mt-8">
+            <StatusCard />
+          </div>
         </div>
       </section>
     </>
