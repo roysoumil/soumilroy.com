@@ -95,8 +95,10 @@ export default function WorkCard({ item, index }: { item: WorkItem; index: numbe
           </div>
         </div>
 
-        {/* The product in a browser frame, turned away in 3D; it swings
-            round to face you when the card is hovered (.shot in globals.css). */}
+        {/* The product in a browser frame, turned away in 3D and dimmed so a
+            bright page does not glare on the dark one; it swings round and
+            comes up to full brightness when the card is hovered (.shot in
+            globals.css). */}
         <div className="shot-scene">
           <figure className="shot">
             <figcaption className="shot-bar font-mono" aria-hidden="true">
@@ -108,7 +110,7 @@ export default function WorkCard({ item, index }: { item: WorkItem; index: numbe
               alt={`The ${item.title} home page`}
               sizes="(min-width: 1024px) 560px, 100vw"
               placeholder="blur"
-              className="block h-auto w-full"
+              className="shot-image block h-auto w-full"
             />
           </figure>
         </div>

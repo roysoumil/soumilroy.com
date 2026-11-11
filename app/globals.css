@@ -542,6 +542,24 @@ body {
   background: var(--accent);
 }
 
+/* Both products have near-white pages, which glare against this one. At
+   rest the capture is turned down to sit with the dark page; hovering or
+   focusing the card brings it back to its real colours. */
+.shot-image {
+  filter: brightness(0.6) saturate(0.8);
+  transition: filter 420ms ease-out;
+}
+
+.group:focus-visible .shot-image {
+  filter: none;
+}
+
+@media (hover: hover) {
+  .group:hover .shot-image {
+    filter: none;
+  }
+}
+
 @media (min-width: 1024px) {
   .shot {
     transform: rotateY(-16deg) rotateX(5deg) scale(0.96);
@@ -559,7 +577,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shot {
+  .shot,
+  .shot-image {
     transition: none;
   }
 }
