@@ -101,6 +101,9 @@ export default function StackScene() {
         aria-label="Stack, from the interface down to the platform"
         style={{ "--mid": MID } as CSSProperties}
       >
+        {/* The floor the stack stands on: the page's only background pattern.
+            It lives in the stage, so it turns with the stack. */}
+        <li aria-hidden="true" className="stack-floor" />
         {LAYERS.map((layer) => (
           <li
             key={layer.name}

@@ -1,5 +1,7 @@
 import HeroSection from "./HeroSection";
 import WorkCard, { type WorkItem } from "./WorkCard";
+import ContactDock from "./ContactDock";
+import SiteFooter from "./SiteFooter";
 import empowerregShot from "../public/work/empowerreg.jpg";
 import vedicmathsShot from "../public/work/vedicmaths.jpg";
 
@@ -135,12 +137,16 @@ const EARLIER: { years?: string; name: string; role: string; summary: string }[]
   },
 ];
 
+// Each section below the hero carries its own faint line pattern (the
+// .section-bg rules in globals.css), masked so it fades out before the
+// section's edges and never meets its neighbour's.
 export default function Home() {
   return (
-    <main className="relative bg-grid font-sans">
+    <main className="relative font-sans">
       <HeroSection />
 
-      <section className="relative px-6 pb-10 pt-6 sm:px-10 sm:pb-14 sm:pt-8 lg:px-16 lg:pb-16 lg:pt-10">
+      <section id="about" className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+        <div aria-hidden="true" className="section-bg is-strata" />
         <div className="fade-in-block [animation-delay:1000ms] relative mx-auto grid max-w-7xl gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
           <div>
             <h2 className="text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
@@ -177,7 +183,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative px-6 pb-10 pt-6 sm:px-10 sm:pb-14 sm:pt-8 lg:px-16 lg:pb-16 lg:pt-10">
+      <section id="services" className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+        <div aria-hidden="true" className="section-bg is-columns" />
         <div className="relative mx-auto max-w-7xl">
           <h2 className="mb-8 text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
             What I can help with
@@ -193,7 +200,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative px-6 pb-16 pt-6 sm:px-10 sm:pb-20 sm:pt-8 lg:px-16 lg:pb-24 lg:pt-10">
+      <section id="work" className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+        <div aria-hidden="true" className="section-bg is-dots" />
         <div className="relative mx-auto max-w-7xl">
           <header className="fade-in-block [animation-delay:200ms] mb-10 flex items-baseline justify-between gap-4">
             <h2 className="text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
@@ -211,7 +219,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative px-6 pb-16 sm:px-10 sm:pb-20 lg:px-16 lg:pb-24">
+      <section id="recommendations" className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+        <div aria-hidden="true" className="section-bg is-rings" />
         <div className="relative mx-auto max-w-7xl">
           <header className="mb-10 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
             <h2 className="text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
@@ -254,7 +263,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative px-6 pb-16 sm:px-10 sm:pb-20 lg:px-16 lg:pb-24">
+      <section id="earlier" className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+        <div aria-hidden="true" className="section-bg is-iso" />
         <div className="relative mx-auto max-w-7xl">
           <h2 className="mb-8 text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
             Earlier work
@@ -279,13 +289,9 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="relative border-t border-[var(--line-soft)] px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
-        <div className="mx-auto max-w-7xl">
-          <p className="font-mono text-[12px] lowercase tabular-nums text-[var(--text-2)]">
-            © {new Date().getFullYear()} Soumil Roy
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
+
+      <ContactDock />
     </main>
   );
 }

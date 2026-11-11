@@ -6,6 +6,7 @@ import { SiGithub } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 import trackCursor from "./trackCursor";
 import StackScene from "./StackScene";
+import useCopyEmail, { EMAIL } from "./useCopyEmail";
 
 const FULL_NAME = "Soumil Roy";
 
@@ -21,10 +22,9 @@ const TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
 });
 
 function StatusCard() {
-  const [copied, setCopied] = useState(false);
+  const [copied, copyEmail] = useCopyEmail();
   const [time, setTime] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(false);
-  const copyTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const update = () => {
@@ -39,28 +39,11 @@ function StatusCard() {
     return () => clearInterval(id);
   }, []);
 
-  const copyEmail = () => {
-    navigator.clipboard?.writeText("soumilroy@pm.me")?.then(
-      () => {
-        setCopied(true);
-        if (copyTimeout.current) clearTimeout(copyTimeout.current);
-        copyTimeout.current = setTimeout(() => setCopied(false), 1800);
-      },
-      () => {},
-    );
-  };
-
-  useEffect(() => {
-    return () => {
-      if (copyTimeout.current) clearTimeout(copyTimeout.current);
-    };
-  }, []);
-
   const iconLink =
     "grid size-10 place-items-center rounded-md border border-[var(--line)] text-[var(--text-2)] transition-colors hover:border-[var(--accent-ring)] hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]";
 
   return (
-    <aside className="fade-in-block [animation-delay:900ms]">
+    <aside id="contact" className="fade-in-block [animation-delay:900ms]">
       <div
         onMouseMove={trackCursor}
         className="border-light relative flex flex-col gap-6 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--card-shadow)] lg:flex-row lg:items-end lg:justify-between lg:p-8"
@@ -94,7 +77,7 @@ function StatusCard() {
             <HiOutlineMail aria-hidden="true" className="size-4 shrink-0" />
             {/* Fixed width so the button does not jump when the label swaps. */}
             <span className="min-w-[15ch] text-left font-mono text-[13px]">
-              {copied ? "Copied" : "soumilroy@pm.me"}
+              {copied ? "Copied" : EMAIL}
             </span>
           </button>
           <a
@@ -225,7 +208,8 @@ export default function HeroSection() {
 
       <section
         ref={sectionRef}
-        className="relative overflow-hidden px-6 pb-10 pt-16 sm:px-10 sm:pb-14 sm:pt-20 lg:px-16 lg:pb-16 lg:pt-24"
+        id="top"
+        className="relative overflow-hidden px-6 pb-12 pt-16 sm:px-10 sm:pb-16 sm:pt-20 lg:px-16 lg:pb-20 lg:pt-24"
       >
         <div className="relative z-10 mx-auto w-full max-w-7xl">
           <div className="grid gap-y-6 xl:grid-cols-[minmax(0,1fr)_540px] xl:items-center xl:gap-x-10">

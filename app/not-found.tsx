@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="relative min-h-screen bg-grid font-sans">
+    <main className="relative min-h-screen font-sans">
       <section className="relative flex min-h-screen items-center overflow-hidden px-6 py-20 sm:px-10 sm:py-28 lg:px-16 lg:py-32">
         <div className="relative z-10 mx-auto w-full max-w-2xl text-left">
           <p className="font-mono text-[12px] lowercase tabular-nums text-[var(--text-2)]">

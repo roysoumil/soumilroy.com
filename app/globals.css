@@ -22,6 +22,8 @@
   --accent-ring: rgba(63, 185, 80, 0.5);
 
   --grid-line: rgba(245, 245, 247, 0.035);
+  --floor-line: rgba(245, 245, 247, 0.16);
+  --bg-line: rgba(245, 245, 247, 0.06);
   --spotlight: rgba(63, 185, 80, 0.12);
   /* A real (invisible) shadow rather than `none`: Tailwind composes shadows
      and focus rings into one box-shadow list, and `none` inside that list
@@ -174,6 +176,29 @@ body {
   height: 0;
   transform-style: preserve-3d;
   transform: rotateX(calc(60deg + var(--tilt-x, 0deg))) rotateZ(calc(-45deg + var(--tilt-z, 0deg)));
+}
+
+/* A grid floor under the bottom plate, at the depth its shadow already
+   falls to. It is a leaf (nothing 3D inside it), so unlike the plates it can
+   take a mask: the grid fades out before it reaches its own edge. */
+.stack-floor {
+  --floor: calc(var(--s) * 3.6);
+  position: absolute;
+  left: calc(var(--floor) / -2);
+  top: calc(var(--floor) / -2);
+  width: var(--floor);
+  height: var(--floor);
+  transform: translateZ(calc(var(--mid) * var(--gap) * -1 - var(--gap) * 0.55 + var(--thick) - 1px));
+  background-image:
+    linear-gradient(to right, var(--floor-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--floor-line) 1px, transparent 1px);
+  background-size: calc(var(--s) / 3) calc(var(--s) / 3);
+  /* Offset by half a line so a grid line, not a gap, runs under the centre. */
+  background-position: calc(var(--floor) / 2) calc(var(--floor) / 2);
+  -webkit-mask-image: radial-gradient(closest-side, #000 0%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 0%, #000 30%, transparent 100%);
+  pointer-events: none;
+  animation: stack-fade 900ms ease-out 900ms backwards;
 }
 
 .stack-layer {
@@ -414,6 +439,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .stack-layer,
+  .stack-floor,
   .stack-link,
   .stack-cast,
   .stack-label {
@@ -538,16 +564,96 @@ body {
   }
 }
 
-.bg-grid {
-  background-color: var(--bg);
+/* Contact dock: slides up once the hero's contact card is out of view. */
+.contact-dock {
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 12px;
+  transition: opacity 240ms ease-out, translate 240ms ease-out, visibility 240ms;
+}
+
+.contact-dock.is-shown {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-dock {
+    transition: none;
+  }
+}
+
+/* ── Section backgrounds ────────────────────────────────────────────────
+   One pattern per section, all drawn from the same faint line so they read
+   as a family. Each is a sheet behind the section's content with a mask
+   that fades it to nothing before the section's edge. */
+.section-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* About: layers seen edge-on, gathered behind the fact sheet. */
+.section-bg.is-strata {
+  background-image: repeating-linear-gradient(to bottom, var(--bg-line) 0 1px, transparent 1px 10px);
+  -webkit-mask-image: radial-gradient(55% 75% at 82% 55%, #000 0%, transparent 100%);
+  mask-image: radial-gradient(55% 75% at 82% 55%, #000 0%, transparent 100%);
+}
+
+/* What I can help with: the twelve column guides of a layout file. */
+.section-bg.is-columns {
+  inset: 0 24px;
+  background-image: repeating-linear-gradient(to right, var(--bg-line) 0 1px, transparent 1px calc(100% / 12));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 35%, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 35%, #000 60%, transparent 100%);
+}
+
+/* Selected work: a dot grid, like the canvas the work was drawn on. It
+   shows in the margins and between the cards, which are opaque. */
+.section-bg.is-dots {
+  background-image: radial-gradient(circle, rgba(245, 245, 247, 0.17) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 80%, transparent 100%);
+}
+
+/* Recommendations: rings spreading out from the lead quote. */
+.section-bg.is-rings {
+  background-image: repeating-radial-gradient(circle at 14% 30%, transparent 0 38px, var(--bg-line) 38px 39px);
+  -webkit-mask-image: radial-gradient(75% 85% at 14% 30%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(75% 85% at 14% 30%, #000 0%, transparent 78%);
+}
+
+/* Earlier work: the hero floor's grid again, at the same isometric angles,
+   coming up from the bottom corner so the page ends on what it opened with. */
+.section-bg.is-iso {
   background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 48px 48px;
+    repeating-linear-gradient(26.57deg, var(--bg-line) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(153.43deg, var(--bg-line) 0 1px, transparent 1px 34px);
+  -webkit-mask-image: radial-gradient(85% 110% at 100% 100%, #000 0%, #000 15%, transparent 75%);
+  mask-image: radial-gradient(85% 110% at 100% 100%, #000 0%, #000 15%, transparent 75%);
+}
+
+@media (min-width: 640px) {
+  .section-bg.is-columns {
+    inset: 0 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-bg.is-columns {
+    inset: 0 64px;
+  }
 }
 
 @media print {
-  html, body, main, section, aside, footer, .bg-grid {
+  .section-bg {
+    display: none;
+  }
+
+  html, body, main, section, aside, footer {
     background: white !important;
     background-image: none !important;
     color: black !important;
