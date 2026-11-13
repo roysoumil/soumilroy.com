@@ -20,7 +20,7 @@ export default function SiteFooter() {
       className="relative border-t border-[var(--line-soft)] px-6 pb-8 pt-14 sm:px-10 sm:pt-16 lg:px-16 lg:pt-20"
     >
       <div className="mx-auto max-w-7xl">
-        <h2 className="max-w-[16em] text-balance font-serif text-[clamp(2rem,4.6vw,3.6rem)] font-light leading-[1.08] tracking-[-0.02em] text-[var(--text)]">
+        <h2 className="max-w-[16em] text-balance font-display text-[clamp(1.6rem,3.7vw,2.9rem)] font-light leading-[1.08] tracking-[-0.045em] text-[var(--text)]">
           Have something to build?
         </h2>
         <p className="mt-4 max-w-[46ch] text-pretty text-[clamp(1rem,1.6vw,1.125rem)] leading-[1.65] text-[var(--text-2)]">
