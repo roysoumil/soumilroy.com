@@ -149,7 +149,7 @@ export default function Home() {
         <div aria-hidden="true" className="section-bg is-strata" />
         <div className="fade-in-block [animation-delay:1000ms] relative mx-auto grid max-w-7xl gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
           <div>
-            <h2 className="text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
+            <h2 className="text-balance font-display text-[clamp(1.4rem,2.6vw,1.8rem)] font-normal tracking-[-0.034em] text-[var(--text)]">
               About
             </h2>
             <p className="mt-5 max-w-[58ch] text-pretty text-[clamp(1rem,1.6vw,1.125rem)] leading-[1.65] text-[var(--text-2)]">
@@ -186,13 +186,13 @@ export default function Home() {
       <section id="services" className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
         <div aria-hidden="true" className="section-bg is-columns" />
         <div className="relative mx-auto max-w-7xl">
-          <h2 className="mb-8 text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
+          <h2 className="mb-8 text-balance font-display text-[clamp(1.4rem,2.6vw,1.8rem)] font-normal tracking-[-0.034em] text-[var(--text)]">
             What I can help with
           </h2>
           <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
             {SERVICES.map((service) => (
               <li key={service.title} className="border-t border-[var(--line)] pt-5">
-                <h3 className="font-serif text-[1.3rem] leading-tight text-[var(--text)]">{service.title}</h3>
+                <h3 className="font-display text-[1.04rem] leading-tight tracking-[-0.02em] text-[var(--text)]">{service.title}</h3>
                 <p className="mt-2.5 text-pretty text-[0.95rem] leading-[1.6] text-[var(--text-2)]">{service.body}</p>
               </li>
             ))}
@@ -204,7 +204,7 @@ export default function Home() {
         <div aria-hidden="true" className="section-bg is-dots" />
         <div className="relative mx-auto max-w-7xl">
           <header className="fade-in-block [animation-delay:200ms] mb-10 flex items-baseline justify-between gap-4">
-            <h2 className="text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
+            <h2 className="text-balance font-display text-[clamp(1.4rem,2.6vw,1.8rem)] font-normal tracking-[-0.034em] text-[var(--text)]">
               Selected work
             </h2>
             <span className="font-mono text-[12px] lowercase tabular-nums text-[var(--text-3)]">
@@ -223,7 +223,7 @@ export default function Home() {
         <div aria-hidden="true" className="section-bg is-rings" />
         <div className="relative mx-auto max-w-7xl">
           <header className="mb-10 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-            <h2 className="text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
+            <h2 className="text-balance font-display text-[clamp(1.4rem,2.6vw,1.8rem)] font-normal tracking-[-0.034em] text-[var(--text)]">
               Recommendations
             </h2>
             <a
@@ -238,7 +238,7 @@ export default function Home() {
 
           {RECOMMENDATIONS.slice(0, 1).map((rec) => (
             <figure key={rec.name} className="max-w-[58rem]">
-              <blockquote className="text-pretty font-serif text-[clamp(1.3rem,2.6vw,1.9rem)] font-light leading-[1.35] tracking-[-0.01em] text-[var(--text)]">
+              <blockquote className="text-pretty font-display text-[clamp(1.05rem,2.1vw,1.5rem)] font-light leading-[1.4] tracking-[-0.022em] text-[var(--text)]">
                 “{rec.quote}”
               </blockquote>
               <figcaption className="mt-5 text-sm text-[var(--text-2)]">
@@ -266,7 +266,7 @@ export default function Home() {
       <section id="earlier" className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
         <div aria-hidden="true" className="section-bg is-iso" />
         <div className="relative mx-auto max-w-7xl">
-          <h2 className="mb-8 text-balance font-serif text-[clamp(1.75rem,3.2vw,2.25rem)] font-normal tracking-[-0.015em] text-[var(--text)]">
+          <h2 className="mb-8 text-balance font-display text-[clamp(1.4rem,2.6vw,1.8rem)] font-normal tracking-[-0.034em] text-[var(--text)]">
             Earlier work
           </h2>
           <ol className="border-b border-[var(--line)]">
@@ -277,7 +277,7 @@ export default function Home() {
               >
                 <p className="font-mono text-[12px] tabular-nums text-[var(--text-3)]">{job.years}</p>
                 <div>
-                  <h3 className="font-serif text-[1.3rem] leading-tight text-[var(--text)]">{job.name}</h3>
+                  <h3 className="font-display text-[1.04rem] leading-tight tracking-[-0.02em] text-[var(--text)]">{job.name}</h3>
                   <p className="mt-1 text-[13px] text-[var(--text-3)]">{job.role}</p>
                 </div>
                 <p className="max-w-[60ch] text-pretty text-[0.95rem] leading-[1.6] text-[var(--text-2)]">

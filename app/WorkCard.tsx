@@ -57,7 +57,7 @@ export default function WorkCard({ item, index }: { item: WorkItem; index: numbe
       className="fade-in-block border-light group relative block rounded-lg border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--card-shadow)] transition-colors duration-200 focus-visible:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] sm:p-8 lg:p-10"
     >
       <div className="flex items-baseline justify-between gap-4">
-        <h3 className="font-serif text-[clamp(1.6rem,3vw,2.1rem)] font-normal leading-tight tracking-[-0.015em] text-[var(--text)] transition-colors group-hover:text-[var(--accent)]">
+        <h3 className="font-display text-[clamp(1.3rem,2.4vw,1.7rem)] font-normal leading-tight tracking-[-0.034em] text-[var(--text)] transition-colors group-hover:text-[var(--accent)]">
           {item.title}
         </h3>
         <span className="flex shrink-0 items-center gap-2.5 font-mono text-[12px] lowercase tabular-nums text-[var(--text-3)]">

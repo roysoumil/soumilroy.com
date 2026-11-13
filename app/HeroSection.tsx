@@ -49,7 +49,7 @@ function StatusCard() {
         className="border-light relative flex flex-col gap-6 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--card-shadow)] lg:flex-row lg:items-end lg:justify-between lg:p-8"
       >
         <div>
-          <p className="text-balance font-serif text-[clamp(1.5rem,3vw,2.1rem)] font-light leading-tight tracking-[-0.015em] text-[var(--text)]">
+          <p className="text-balance font-display text-[clamp(1.2rem,2.4vw,1.7rem)] font-light leading-tight tracking-[-0.034em] text-[var(--text)]">
             Open to freelance and consulting work.
           </p>
           <p className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-[var(--text-3)]">
@@ -217,14 +217,14 @@ export default function HeroSection() {
               {/* The name stays the page's h1 (it is what people search
                   for) even though the statement below is set larger. */}
               <div className="fade-in-block [animation-delay:150ms] flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[0.95rem] text-[var(--text-2)]">
-                <h1 className="font-serif text-[1.35rem] font-normal text-[var(--text)]">{FULL_NAME}</h1>
+                <h1 className="font-display text-[1.08rem] font-normal tracking-[-0.02em] text-[var(--text)]">{FULL_NAME}</h1>
                 {/* Only when the roles fit beside the name; alone on a line it
                     is a stray mark. */}
                 <span aria-hidden="true" className="hidden text-[var(--line)] sm:inline">/</span>
                 <p>{ROLE_LINE}</p>
               </div>
 
-              <p className="fade-in-block [animation-delay:400ms] mt-6 max-w-[15em] text-balance font-serif text-[clamp(2rem,4.6vw,3.6rem)] font-light leading-[1.08] tracking-[-0.02em] text-[var(--text)]">
+              <p className="fade-in-block [animation-delay:400ms] mt-6 max-w-[15em] text-balance font-display text-[clamp(1.6rem,3.7vw,2.9rem)] font-light leading-[1.08] tracking-[-0.045em] text-[var(--text)]">
                 {STATEMENT}
               </p>
             </div>

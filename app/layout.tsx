@@ -1,21 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Spline_Sans, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 
-// Headings only. Body and UI text run on the platform UI font (see
-// globals.css) so the page carries one voice of its own rather than
-// the house sans every other engineer portfolio ships with.
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
+// One family in two cuts. Spline Sans Mono sets the headlines and every
+// technical detail (dates, tags, layer labels, the email address), so the
+// page reads like typed notes clipped to a pad; Spline Sans carries the body
+// copy. Neither is the house sans most engineer portfolios ship with.
+const splineMono = Spline_Sans_Mono({
+  variable: "--font-spline-mono",
   subsets: ["latin"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const splineSans = Spline_Sans({
+  variable: "--font-spline-sans",
   subsets: ["latin"],
-  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -100,7 +99,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${newsreader.variable} ${plexMono.variable} antialiased`}
+        className={`${splineMono.variable} ${splineSans.variable} antialiased`}
         suppressHydrationWarning
       >
         <script

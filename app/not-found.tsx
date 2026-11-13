@@ -8,7 +8,7 @@ export default function NotFound() {
           <p className="font-mono text-[12px] lowercase tabular-nums text-[var(--text-2)]">
             404 · path not found
           </p>
-          <h1 className="mt-5 text-left font-serif text-[clamp(2.75rem,7.5vw,5.25rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--text)]">
+          <h1 className="mt-5 text-left font-display text-[clamp(2.2rem,6vw,4.2rem)] font-light leading-[1] tracking-[-0.045em] text-[var(--text)]">
             Nothing here.
           </h1>
           <p className="mt-6 max-w-[52ch] text-pretty text-left text-[clamp(1.05rem,2.1vw,1.25rem)] leading-[1.55] text-[var(--text-2)]">

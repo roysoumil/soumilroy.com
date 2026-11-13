@@ -47,15 +47,17 @@
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text);
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-newsreader), ui-serif, Georgia, "Times New Roman", serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: var(--font-spline-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Headlines. A monospace sets about a fifth wider than the serif it
+     replaced, so display sizes run ~20% smaller with tighter tracking. */
+  --font-display: var(--font-spline-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-mono: var(--font-spline-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 body {
   background: var(--bg);
   color: var(--text-2);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-spline-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-feature-settings: "kern", "calt";
 }
 
