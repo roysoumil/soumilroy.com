@@ -1,39 +1,47 @@
 @import "tailwindcss";
 
-/* Dark only. Every colour on the site resolves through these tokens instead
-   of a hard-coded hex. */
+/* Light only: graphite on drafting vellum, with green ink. Every colour on
+   the site resolves through these tokens instead of a hard-coded hex. */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --bg: #0a0a0b;
-  --surface: #141417;
-  --line: #2a2a30;
-  --line-soft: #1e1e23;
+  --bg: #f5f6f3;
+  --surface: #fcfcfb;
+  --line: #d6d9d3;
+  --line-soft: #e6e8e3;
 
-  /* Body copy sits at L >= 0.87 on purpose: mid-grey on black is both a
-     contrast failure and the tell of an unconsidered dark theme. */
-  --text: #f5f5f7;
-  --text-2: #dcdce1;
-  --text-3: #c2c2ca;
+  /* Body copy holds 10:1 on the paper and labels 6:1 on cards. The vellum
+     and its grid carry the character, so the type never goes pale. */
+  --text: #1a1c1a;
+  --text-2: #363a36;
+  --text-3: #5a5f5a;
 
-  --accent: #3fb950;
-  --accent-hi: #6fdc7d;
-  --accent-wash: rgba(63, 185, 80, 0.08);
-  --accent-ring: rgba(63, 185, 80, 0.5);
+  --accent: #17744a;
+  --accent-hi: #0f5c39;
+  --accent-wash: rgba(23, 116, 74, 0.09);
+  --accent-ring: rgba(23, 116, 74, 0.42);
+  /* The online dot, kept apart from the accent so the ink can change
+     without the dot losing its "available" green. */
+  --status: #1f8f52;
 
-  --grid-line: rgba(245, 245, 247, 0.035);
-  --floor-line: rgba(245, 245, 247, 0.16);
-  --bg-line: rgba(245, 245, 247, 0.06);
-  --spotlight: rgba(63, 185, 80, 0.12);
-  /* A real (invisible) shadow rather than `none`: Tailwind composes shadows
-     and focus rings into one box-shadow list, and `none` inside that list
-     voids the whole declaration, taking the focus ring with it. */
-  --card-shadow: 0 0 #0000;
-  --plate-line: #3d3d47;
-  --plate-side: #2b2b33;
-  --plate-side-lit: #1f1f25;
-  --plate-cast: rgba(0, 0, 0, 0.4);
-  --shot-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  --grid-line: rgba(70, 80, 90, 0.08);
+  --floor-line: rgba(70, 80, 90, 0.26);
+  --bg-line: rgba(70, 80, 90, 0.10);
+  --dot: rgba(70, 80, 90, 0.24);
+  --spotlight: rgba(23, 116, 74, 0.05);
+  /* Never `none`: Tailwind composes shadows and focus rings into one
+     box-shadow list, and `none` inside that list voids the whole
+     declaration, taking the focus ring with it. */
+  --card-shadow: 0 1px 2px rgba(25, 30, 25, 0.06);
+  --plate-line: #bfc4be;
+  --plate-side: #d9dcd6;
+  --plate-side-lit: #e7e9e5;
+  --plate-cast: rgba(30, 35, 30, 0.14);
+  --shot-shadow: 0 18px 36px -20px rgba(25, 30, 25, 0.32);
+  --dock-shadow: 0 12px 32px -12px rgba(25, 30, 25, 0.28);
+  /* Product captures sit at full colour on a light page. A dark palette
+     would turn them down here so their white pages do not glare. */
+  --shot-filter: none;
 }
 
 @theme inline {
@@ -542,11 +550,11 @@ body {
   background: var(--accent);
 }
 
-/* Both products have near-white pages, which glare against this one. At
-   rest the capture is turned down to sit with the dark page; hovering or
-   focusing the card brings it back to its real colours. */
+/* At rest the capture takes --shot-filter (none on the current light
+   palette); hovering or focusing the card always brings it back to its real
+   colours. */
 .shot-image {
-  filter: brightness(0.6) saturate(0.8);
+  filter: var(--shot-filter);
   transition: filter 420ms ease-out;
 }
 
@@ -585,7 +593,7 @@ body {
 
 /* Contact dock: slides up once the hero's contact card is out of view. */
 .contact-dock {
-  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.8);
+  box-shadow: var(--dock-shadow);
   opacity: 0;
   visibility: hidden;
   translate: 0 12px;
@@ -632,7 +640,7 @@ body {
 /* Selected work: a dot grid, like the canvas the work was drawn on. It
    shows in the margins and between the cards, which are opaque. */
 .section-bg.is-dots {
-  background-image: radial-gradient(circle, rgba(245, 245, 247, 0.17) 1px, transparent 1.4px);
+  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.4px);
   background-size: 22px 22px;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 80%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 80%, transparent 100%);

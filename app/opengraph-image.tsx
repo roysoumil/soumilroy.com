@@ -12,13 +12,13 @@ export default function Image() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#09090b",
+          background: "#f5f6f3",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
           position: "relative",
-          color: "#f4f4f5",
+          color: "#1a1c1a",
         }}
       >
         <div
@@ -26,7 +26,7 @@ export default function Image() {
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "linear-gradient(to right, rgba(228,228,231,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(228,228,231,0.04) 1px, transparent 1px)",
+              "linear-gradient(to right, rgba(70,80,90,0.10) 1px, transparent 1px), linear-gradient(to bottom, rgba(70,80,90,0.10) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
             display: "flex",
           }}
@@ -36,7 +36,7 @@ export default function Image() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(63, 185, 80, 0.14), transparent)",
+              "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(23, 116, 74, 0.08), transparent)",
             display: "flex",
           }}
         />
@@ -55,14 +55,14 @@ export default function Image() {
               width: 14,
               height: 14,
               borderRadius: "50%",
-              background: "#3fb950",
+              background: "#1f8f52",
               display: "flex",
             }}
           />
           <span
             style={{
               fontSize: 22,
-              color: "#a1a1aa",
+              color: "#5a5f5a",
               letterSpacing: "4px",
               textTransform: "uppercase",
               display: "flex",
@@ -78,7 +78,7 @@ export default function Image() {
             fontWeight: 400,
             letterSpacing: "-6px",
             lineHeight: 1,
-            color: "#f4f4f5",
+            color: "#1a1c1a",
             position: "relative",
             display: "flex",
           }}
@@ -90,7 +90,7 @@ export default function Image() {
           style={{
             marginTop: 32,
             fontSize: 38,
-            color: "#a1a1aa",
+            color: "#5a5f5a",
             position: "relative",
             display: "flex",
           }}
@@ -102,7 +102,7 @@ export default function Image() {
           style={{
             marginTop: 60,
             fontSize: 24,
-            color: "#52525b",
+            color: "#7a7f7a",
             letterSpacing: "3px",
             position: "relative",
             display: "flex",

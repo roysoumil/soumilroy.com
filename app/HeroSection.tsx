@@ -55,11 +55,11 @@ function StatusCard() {
           <p className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-[var(--text-3)]">
             <span role="status" aria-label={isOffline ? "Offline" : "Available"} className="relative flex size-2">
               {!isOffline && (
-                <span aria-hidden="true" className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--accent)] opacity-60" />
+                <span aria-hidden="true" className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--status)] opacity-60" />
               )}
               <span
                 aria-hidden="true"
-                className={`relative inline-flex size-2 rounded-full ${isOffline ? "bg-[var(--text-3)]" : "bg-[var(--accent)]"}`}
+                className={`relative inline-flex size-2 rounded-full ${isOffline ? "bg-[var(--text-3)]" : "bg-[var(--status)]"}`}
               />
             </span>
             {isOffline ? "Offline, back at 09:00 IST" : "Online now"}
