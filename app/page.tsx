@@ -156,16 +156,7 @@ export default function Home() {
               For nine years I have been building and owning end-to-end systems, from the first design through to
               production. I work mainly in Go, Python and JavaScript, and I design, deploy and operate cloud-native
               systems on Azure. I like the scaling problems most: systems that have to keep working as the data, the
-              traffic and the team all grow. Right now I work across the whole product at{" "}
-              <a
-                href="https://empowerreg.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-sm text-[var(--accent)] underline decoration-[var(--accent-ring)] decoration-1 underline-offset-[3px] transition-colors hover:text-[var(--accent-hi)] hover:decoration-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-[3px] focus-visible:ring-offset-[var(--bg)]"
-              >
-                empowerreg.ai
-              </a>
-              , a regulatory intelligence platform.
+              traffic and the team all grow.
             </p>
           </div>
 
