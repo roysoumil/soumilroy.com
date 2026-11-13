@@ -5,8 +5,8 @@ import { HiOutlineMail, HiX } from "react-icons/hi";
 import useCopyEmail, { EMAIL } from "./useCopyEmail";
 
 // A small bar that keeps the email one click away between the page's two
-// fixed contact points: it shows once the hero's card (#contact) has scrolled
-// off the top, and steps aside when the footer (#footer) comes into view.
+// fixed contact points: it shows once the hero's contact block (#contact) has
+// scrolled off the top, and steps aside when the footer (#footer) comes into view.
 export default function ContactDock() {
   const [past, setPast] = useState(false);
   const [atFooter, setAtFooter] = useState(false);

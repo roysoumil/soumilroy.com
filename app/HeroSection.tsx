@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { HiOutlineMail } from "react-icons/hi";
 import { SiGithub } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
-import trackCursor from "./trackCursor";
 import StackScene from "./StackScene";
 import useCopyEmail, { EMAIL } from "./useCopyEmail";
 
@@ -40,67 +39,65 @@ function StatusCard() {
   }, []);
 
   const iconLink =
-    "grid size-10 place-items-center rounded-md border border-[var(--line)] text-[var(--text-2)] transition-colors hover:border-[var(--accent-ring)] hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]";
+    "grid size-10 place-items-center rounded-md border border-[var(--line)] text-[var(--text-2)] transition-colors hover:border-[var(--accent-ring)] hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]";
 
+  // Sits in the hero's text column, straight under the statement, so the
+  // way to get in touch is on the first screen without a card of its own.
+  // ContactDock watches #contact to know when it has scrolled away.
   return (
-    <aside id="contact" className="fade-in-block [animation-delay:900ms]">
-      <div
-        onMouseMove={trackCursor}
-        className="border-light relative flex flex-col gap-6 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--card-shadow)] lg:flex-row lg:items-end lg:justify-between lg:p-8"
-      >
-        <div>
-          <p className="text-balance font-display text-[clamp(1.2rem,2.4vw,1.7rem)] font-light leading-tight tracking-[-0.034em] text-[var(--text)]">
-            Open to freelance and consulting work.
-          </p>
-          <p className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-[var(--text-3)]">
-            <span role="status" aria-label={isOffline ? "Offline" : "Available"} className="relative flex size-2">
-              {!isOffline && (
-                <span aria-hidden="true" className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--status)] opacity-60" />
-              )}
-              <span
-                aria-hidden="true"
-                className={`relative inline-flex size-2 rounded-full ${isOffline ? "bg-[var(--text-3)]" : "bg-[var(--status)]"}`}
-              />
-            </span>
-            {isOffline ? "Offline, back at 09:00 IST" : "Online now"}
-            <span className="font-mono text-[12px] tabular-nums">{time ? `${time} IST` : "~/now"}</span>
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2.5">
-          <button
-            type="button"
-            onClick={copyEmail}
-            aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
-            className="flex h-10 w-full items-center justify-center gap-2.5 rounded-md bg-[var(--accent)] px-4 text-sm font-medium text-[var(--bg)] transition-colors hover:bg-[var(--accent-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)] sm:w-auto"
-          >
-            <HiOutlineMail aria-hidden="true" className="size-4 shrink-0" />
-            {/* Fixed width so the button does not jump when the label swaps. */}
-            <span className="min-w-[15ch] text-left font-mono text-[13px]">
-              {copied ? "Copied" : EMAIL}
-            </span>
-          </button>
-          <a
-            href="https://github.com/roysoumil"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className={iconLink}
-          >
-            <SiGithub aria-hidden="true" className="size-4" />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/soumilroy/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className={iconLink}
-          >
-            <FaLinkedin aria-hidden="true" className="size-4" />
-          </a>
-        </div>
+    <div id="contact" className="fade-in-block [animation-delay:650ms] mt-8 flex flex-col gap-4">
+      <div>
+        <p className="text-balance font-display text-[clamp(1.05rem,1.4vw,1.25rem)] font-light leading-tight tracking-[-0.03em] text-[var(--text)]">
+          Open to freelance and consulting work.
+        </p>
+        <p className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-[var(--text-3)]">
+          <span role="status" aria-label={isOffline ? "Offline" : "Available"} className="relative flex size-2">
+            {!isOffline && (
+              <span aria-hidden="true" className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--status)] opacity-60" />
+            )}
+            <span
+              aria-hidden="true"
+              className={`relative inline-flex size-2 rounded-full ${isOffline ? "bg-[var(--text-3)]" : "bg-[var(--status)]"}`}
+            />
+          </span>
+          {isOffline ? "Offline, back at 09:00 IST" : "Online now"}
+          <span className="font-mono text-[12px] tabular-nums">{time ? `${time} IST` : "~/now"}</span>
+        </p>
       </div>
-    </aside>
+
+      <div className="flex flex-wrap items-center gap-2.5">
+        <button
+          type="button"
+          onClick={copyEmail}
+          aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
+          className="flex h-10 w-full items-center justify-center gap-2.5 rounded-md bg-[var(--accent)] px-4 text-sm font-medium text-[var(--bg)] transition-colors hover:bg-[var(--accent-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] sm:w-auto"
+        >
+          <HiOutlineMail aria-hidden="true" className="size-4 shrink-0" />
+          {/* Fixed width so the button does not jump when the label swaps. */}
+          <span className="min-w-[15ch] text-left font-mono text-[13px]">
+            {copied ? "Copied" : EMAIL}
+          </span>
+        </button>
+        <a
+          href="https://github.com/roysoumil"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          className={iconLink}
+        >
+          <SiGithub aria-hidden="true" className="size-4" />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/soumilroy/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+          className={iconLink}
+        >
+          <FaLinkedin aria-hidden="true" className="size-4" />
+        </a>
+      </div>
+    </div>
   );
 }
 
@@ -227,15 +224,13 @@ export default function HeroSection() {
               <p className="fade-in-block [animation-delay:400ms] mt-6 max-w-[15em] text-balance font-display text-[clamp(1.6rem,3.7vw,2.9rem)] font-light leading-[1.08] tracking-[-0.045em] text-[var(--text)]">
                 {STATEMENT}
               </p>
+
+              <StatusCard />
             </div>
 
             <div className="fade-in-block [animation-delay:300ms]">
               <StackScene />
             </div>
-          </div>
-
-          <div className="mt-10 xl:mt-8">
-            <StatusCard />
           </div>
         </div>
       </section>
